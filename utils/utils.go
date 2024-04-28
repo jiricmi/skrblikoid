@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"bufio"
@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func openDbInitials(name string) (initials [4]string) {
+func OpenDbInitials(name string) (initials [4]string) {
 	file, err := os.Open(name)
 	checkDbInitialsError(err, &initials)
 	initials = parseInitials(file)
@@ -39,7 +39,7 @@ func checkDbInitialsError(err error, initials *[4]string) {
 	}
 }
 
-func readFile(filename string) string {
+func ReadFile(filename string) string {
 	data, err := os.ReadFile(filename)
 
 	if err != nil {
