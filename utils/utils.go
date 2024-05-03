@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"bufio"
 	"crypto/sha256"
 	"fmt"
 	"math"
@@ -9,35 +8,6 @@ import (
 	"os"
 	"time"
 )
-
-func OpenDbInitials(name string) (initials [4]string) {
-	file, err := os.Open(name)
-	checkDbInitialsError(err, &initials)
-	initials = parseInitials(file)
-
-	_ = file.Close()
-
-	return initials
-}
-
-func parseInitials(file *os.File) (initials [4]string) {
-	var reader = bufio.NewReader(file)
-	for i := 0; i < 4; i++ {
-		var text, _, err = reader.ReadLine()
-		checkDbInitialsError(err, &initials)
-		if err != nil {
-			break
-		}
-		initials[i] = string(text)
-	}
-	return initials
-}
-
-func checkDbInitialsError(err error, initials *[4]string) {
-	if err != nil {
-		*initials = [...]string{"postgres", "secret", "localhost:5432", "db"}
-	}
-}
 
 func ReadFile(filename string) string {
 	data, err := os.ReadFile(filename)

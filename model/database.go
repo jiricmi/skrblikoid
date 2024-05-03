@@ -1,75 +1,39 @@
 package model
 
 import (
-	"database/sql"
 	"fmt"
-	_ "github.com/lib/pq"
-	"skrblikoid/utils"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"os"
 )
 
-const SecretName string = ".secret"
-const CreateTablesSQL string = "create_tables.sql"
+func InitDB() (db *gorm.DB) {
+	dbName := os.Getenv("POSTGRES_DBNAME")
+	dbUser := os.Getenv("POSTGRES_USER")
+	dbPasswd := os.Getenv("POSTGRES_PASSWORD")
+	dbHost := os.Getenv("POSTGRES_HOST")
+	connection := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable",
+		dbUser, dbPasswd, dbHost, dbName)
 
-func SetupDatabase() (db *sql.DB) {
-	db = initDB()
-	createTables(db)
+	db, err := gorm.Open(postgres.Open(connection), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
 	return db
 }
 
-func initDB() (db *sql.DB) {
-	var initials = utils.OpenDbInitials(SecretName)
-	var connectionString = fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable",
-		initials[0], initials[1], initials[2], initials[3])
-	db, err := sql.Open("postgres", connectionString)
+func AutoMigrate(db *gorm.DB) {
+	err := db.AutoMigrate(
+		&User{},
+		&PersonalData{},
+		&UserDataConnection{},
+		&Category{},
+		&Subcategory{},
+		&Budget{},
+		&Record{},
+	)
 
 	if err != nil {
 		panic(err)
 	}
-
-	return db
-}
-
-func CloseDB(db *sql.DB) {
-	fmt.Println("Closing DB")
-	var err = db.Close()
-	if err != nil {
-		panic(err)
-	}
-}
-
-func createTables(db *sql.DB) {
-	var query = utils.ReadFile(CreateTablesSQL)
-	_, err := db.Exec(query)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func AddUser(db *sql.DB, user User, personalData PersonalData) bool {
-	queryUser := `INSERT INTO "Users" (username, email, password, salt) VALUES ($1, $2, $3, $4) RETURNING id`
-	queryPersonal := `INSERT INTO "PersonalData" (first_name, last_name) VALUES ($1, $2) RETURNING id`
-	queryPersonalUser := `INSERT INTO "UserDataConnection" (user_id, personal_data_id) VALUES ($1, $2)`
-
-	var userId int
-	var err = db.QueryRow(queryUser, user.Username, user.Email, user.Password, user.Salt).Scan(&userId)
-	if err != nil {
-		fmt.Println(err)
-		return false
-	}
-
-	var personalId int
-	err = db.QueryRow(queryPersonal, personalData.FirstName, personalData.LastName).Scan(&personalId)
-	if err != nil {
-		fmt.Println(err) // todo: delete user
-		return false
-	}
-
-	_, err = db.Exec(queryPersonalUser, userId, personalId)
-	if err != nil {
-		fmt.Println(err) // todo: delete user
-		return false
-	}
-
-	fmt.Println("Created user with id: %i and data id %i", personalId, userId)
-	return true
 }

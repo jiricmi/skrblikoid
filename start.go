@@ -1,21 +1,29 @@
 package main
 
 import (
-	_ "github.com/gin-gonic/gin"
 	"skrblikoid/model"
 	"skrblikoid/webserver"
+
+	_ "github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	// load env variables
+	err := godotenv.Load()
+	if err != nil {
+		return
+	}
+
+	var db = model.InitDB()
+	model.AutoMigrate(db)
+
 	server, authRouter := webserver.StartServer()
 	webserver.StartRoutes(server)
 	webserver.StartAuthRoutes(authRouter)
 
-	var db = model.SetupDatabase()
-	defer model.CloseDB(db)
-
-	err := server.Run(":5000")
-	if err != nil {
+	err1 := server.Run(":5000")
+	if err1 != nil {
 		println("Error with server")
 	}
 }
