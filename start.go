@@ -22,8 +22,8 @@ func main() {
 	webserver.StartRoutes(server)
 	webserver.StartAuthRoutes(authRouter)
 
-	err1 := server.Run(":5000")
-	if err1 != nil {
+	err_server := server.Run(":5000")
+	if err_server != nil {
 		println("Error with server")
 	}
 }

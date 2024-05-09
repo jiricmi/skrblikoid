@@ -9,6 +9,12 @@ func StartServer() (server *gin.Engine, authRouter *gin.RouterGroup) {
 	server.Use(gin.Logger())
 	server.Use(gin.Recovery())
 	server.LoadHTMLGlob("templates/*.html")
+	server.Static("/assets", "./frontend/Components/Assets")
+
+	err := server.SetTrustedProxies(nil)
+	if err != nil {
+		panic(err)
+	}
 	return server, authRouter
 }
 
@@ -21,7 +27,7 @@ func StartRoutes(server *gin.Engine) {
 
 	server.GET("/", indexGETHandler)
 	server.GET("/login", loginGETHandler)
-	//server.GET("/login", loginPOSTHandler)
+	//server.POST("/login", loginPOSTHandler)
 }
 
 func StartAuthRoutes(authRouter *gin.RouterGroup) {
