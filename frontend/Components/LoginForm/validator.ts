@@ -30,17 +30,19 @@ export const checkPasswdConf = (passwd: string, confPasswd: string): string => {
 };
 
 export const checkEmail = (action: string, email: string): string => {
-    if (email === "") { // todo: connect to api
+    if (email === "") { // todo: connect to api to check
         return "Email is empty!";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return "Email is not in correct format!";
     }
-
-
     return "";
 }
 
 export const checkUsername = (action: string, username: string): string => {
-    if (username === "") { // todo: connect to api
+    if (username === "") { // todo: connect to api to check
         return "Username is empty!";
+    } else if (!/^[a-zA-Z0-9_-]{5,20}$/.test(username)) {
+        return "Username has to be 5-20 letters long and contain letters numbers and dash";
     }
     return "";
 }
