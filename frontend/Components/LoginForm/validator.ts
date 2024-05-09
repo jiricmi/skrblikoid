@@ -11,8 +11,16 @@ export const formAction = (action: string): void => {
 
 
 export const checkPasswdConf = (passwd: string, confPasswd: string): string => {
-    if (passwd === "") { // todo: check some security
+    if (passwd === "") {
         return "Password is empty!";
+    } else if (passwd.length < 8) {
+        return "Password must have at least 8 characters long!";
+    } else if (!/[a-z]/.test(passwd)) {
+        return "Password must have at least one lowecase letter!";
+    } else if (!/[A-Z]/.test(passwd)) {
+        return "Password must have at least one uppercase letter!";
+    } else if (!/\d/.test(passwd)) {
+        return "Password must have at least one digit!";
     } else if (confPasswd === "") {
         return "Confirm your password!";
     } else if (passwd != confPasswd) {
