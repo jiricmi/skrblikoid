@@ -2,12 +2,20 @@ package model
 
 import (
 	"fmt"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"os"
 )
 
-func InitDB() (db *gorm.DB) {
+var Database = initDB()
+
+func initDB() (db *gorm.DB) {
+
+	if err := godotenv.Load(); err != nil {
+		return
+	}
+
 	dbName := os.Getenv("POSTGRES_DBNAME")
 	dbUser := os.Getenv("POSTGRES_USER")
 	dbPasswd := os.Getenv("POSTGRES_PASSWORD")

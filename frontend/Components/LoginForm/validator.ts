@@ -1,3 +1,5 @@
+const TEMP_HOST = "http://localhost:5000"
+
 export const formAction = (action: string): void => {
     if (action === "signup") {
         console.log("signup")
@@ -35,8 +37,10 @@ export const checkEmail = (action: string, email: string): string => {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         return "Email is not in correct format!";
     }
+    
+
     return "";
-}
+};
 
 export const checkUsername = (action: string, username: string): string => {
     if (username === "") { // todo: connect to api to check
@@ -44,5 +48,41 @@ export const checkUsername = (action: string, username: string): string => {
     } else if (!/^[a-zA-Z0-9_-]{5,20}$/.test(username)) {
         return "Username has to be 5-20 letters long and contain letters numbers and dash";
     }
+
+    checkUsernameExists(username);
+
     return "";
-}
+};
+
+const checkUsernameExists = (username: string): boolean => {
+
+    const data = {
+        username: username,
+    }
+
+    const requestOptions: RequestInit = {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+    let url = TEMP_HOST + '/api/user/exists'
+    fetch(url, requestOptions)
+        .then(
+            response => {
+                if (response.ok) {
+                    console.log(response)
+                } else {
+                    throw new Error("Error")
+                }
+            }
+        )
+        .catch(
+            error => {
+                console.error(error);
+            }
+        );
+
+    return true;
+};
