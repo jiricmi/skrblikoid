@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {checkPasswdConf, checkEmail, checkUsername, formAction} from "./validator";
+import {checkPasswdConf, checkEmail, checkUsername} from "./validator";
 import "./LoginForm.css";
 
 
@@ -57,6 +57,12 @@ const ErrorMessage = ({text}) => {
     );
 }
 
+const RegStateMessage = ({text}) => {
+    return (
+        <div className="message">{text}</div>
+    );
+}
+
 const SubmitButton = ({onclick}) => {
     return (
         <input type="submit" value="Submit" onClick={onclick}/>
@@ -72,25 +78,34 @@ const LoginForm = () => {
     const [emailError, setEmailError] = React.useState<string>("");
     const [usernameError, setUsernameError] = React.useState<string>("");
     const [passwordError, setPasswordError] = React.useState<string>("");
+    const [Message, setMessage] = React.useState<string>("");
 
     useEffect(() => (setPasswordError(checkPasswdConf(password, confirmPassword))));
 
     const validateForm = () => {
-        let validated: boolean; // todo: add validation
         if (action === 'signup') {
-            validated = validateSignup();
+            validateSignup().then((result) => setMessage(result ? "User created!" : "Error creating user"));
         } else {
-            validated = validateSignin();
+            validateSignin();
         }
     };
 
-    const validateSignup = (): boolean => {
-        let validate = true;
-        setEmailError(checkEmail(action, email));
-        setUsernameError(checkUsername(action, username));
-        setPasswordError(checkPasswdConf(password, confirmPassword))
-        return true;
+    const validateSignup = async (): Promise<boolean> => {
 
+        setEmailError(await checkEmail(email));
+        setUsernameError(await checkUsername(username));
+        setPasswordError(checkPasswdConf(password, confirmPassword));
+        if (emailError === "" && usernameError === "" && passwordError === "") {
+            try {
+                setMessage("User created!");
+                return true;
+            } catch (error) {
+                console.error(error);
+                setMessage("Error creating user");
+                return false;
+            }
+        }
+        return false;
     };
 
     const validateSignin = (): boolean => {
@@ -145,6 +160,7 @@ const LoginForm = () => {
                     errMessage={passwordError}
                 />
             </Inputs>
+            <RegStateMessage text={Message}/>
             <SubmitButton onclick={() => validateForm()}/>
         </Container>
     );

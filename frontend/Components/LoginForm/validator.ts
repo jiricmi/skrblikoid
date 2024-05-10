@@ -1,16 +1,6 @@
+import {POSTJsonRequest} from "../RestAPI/requests";
+
 const TEMP_HOST = "http://localhost:5000"
-
-export const formAction = (action: string): void => {
-    if (action === "signup") {
-        console.log("signup")
-
-    } else if (action === "signin") {
-        console.log("signin")
-    } else {
-        console.warn("Invalid action");
-    }
-};
-
 
 export const checkPasswdConf = (passwd: string, confPasswd: string): string => {
     if (passwd === "") {
@@ -31,58 +21,51 @@ export const checkPasswdConf = (passwd: string, confPasswd: string): string => {
     return "";
 };
 
-export const checkEmail = (action: string, email: string): string => {
-    if (email === "") { // todo: connect to api to check
+export const checkEmail = async (email: string): Promise<string> => {
+    if (email === "") {
         return "Email is empty!";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         return "Email is not in correct format!";
+    } else {
+        try {
+            const exists = await checkUserExists({email: email});
+            if (exists) {
+                return "This email is already registred!";
+            }
+        } catch (error) {
+            console.error(error);
+            return "Error checking username";
+        }
     }
-    
-
     return "";
 };
 
-export const checkUsername = (action: string, username: string): string => {
-    if (username === "") { // todo: connect to api to check
+export const checkUsername = async (username: string): Promise<string> => {
+    if (username === "") {
         return "Username is empty!";
     } else if (!/^[a-zA-Z0-9_-]{5,20}$/.test(username)) {
-        return "Username has to be 5-20 letters long and contain letters numbers and dash";
+        return "Username has to be 5-20 letters long and contain letters, numbers, and dashes";
+    } else {
+        try {
+            const exists = await checkUserExists({username: username});
+            if (exists) {
+                return "Username already exists!";
+            }
+        } catch (error) {
+            console.error(error);
+            return "Error checking username";
+        }
     }
-
-    checkUsernameExists(username);
-
     return "";
 };
 
-const checkUsernameExists = (username: string): boolean => {
-
-    const data = {
-        username: username,
+const checkUserExists = async (data: any): Promise<boolean> => {
+    try {
+        const response = await POSTJsonRequest(TEMP_HOST + "/api/user/exists", data);
+        console.log("data exists: " + response.ret);
+        return response.ret;
+    } catch (error) {
+        console.error(error);
+        return true;
     }
-
-    const requestOptions: RequestInit = {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
-    let url = TEMP_HOST + '/api/user/exists'
-    fetch(url, requestOptions)
-        .then(
-            response => {
-                if (response.ok) {
-                    console.log(response)
-                } else {
-                    throw new Error("Error")
-                }
-            }
-        )
-        .catch(
-            error => {
-                console.error(error);
-            }
-        );
-
-    return true;
 };
