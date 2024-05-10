@@ -84,32 +84,44 @@ const LoginForm = () => {
 
     const validateForm = () => {
         if (action === 'signup') {
-            validateSignup().then((result) => setMessage(result ? "User created!" : "Error creating user"));
+            validateSignup().then(() => {
+            });
         } else {
             validateSignin();
         }
     };
 
-    const validateSignup = async (): Promise<boolean> => {
-
-        setEmailError(await checkEmail(email));
-        setUsernameError(await checkUsername(username));
+const validateSignup = async (): Promise<void> => {
+    try {
+        const [emailErr, usernameErr] = await Promise.all([checkEmail(email), checkUsername(username)]);
+        setEmailError(emailErr);
+        setUsernameError(usernameErr);
         setPasswordError(checkPasswdConf(password, confirmPassword));
-        if (emailError === "" && usernameError === "" && passwordError === "") {
+
+        if (emailErr === "" && usernameErr === "" && passwordError === "") {
             try {
+                clearInputs();
                 setMessage("User created!");
-                return true;
             } catch (error) {
                 console.error(error);
                 setMessage("Error creating user");
-                return false;
             }
         }
-        return false;
-    };
+    } catch (error) {
+        console.error(error);
+        setMessage("Error validating user");
+    }
+};
 
     const validateSignin = (): boolean => {
         return true;
+    }
+
+    const clearInputs = () => {
+        setEmail("");
+        setUsername("");
+        setPassword("");
+        setConfirmPassword("");
     }
 
     return (
