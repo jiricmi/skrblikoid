@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {checkPasswdConf, checkEmail, checkUsername} from "./validator";
+import {checkPasswdConf, checkEmail, checkUsername, createUser, loginUser} from "./validator";
 import "./LoginForm.css";
 
 
@@ -87,7 +87,9 @@ const LoginForm = () => {
             validateSignup().then(() => {
             });
         } else {
-            validateSignin();
+            validateSignin().then(() => {
+                // todo: dodelat prechod do uctu
+            })
         }
     };
 
@@ -100,6 +102,12 @@ const validateSignup = async (): Promise<void> => {
 
         if (emailErr === "" && usernameErr === "" && passwordError === "") {
             try {
+
+                let ret = await createUser(username, email, password);
+                if (!ret) {
+                    setMessage("Error creating user");
+                    return;
+                }
                 clearInputs();
                 setMessage("User created!");
             } catch (error) {
@@ -113,8 +121,16 @@ const validateSignup = async (): Promise<void> => {
     }
 };
 
-    const validateSignin = (): boolean => {
-        return true;
+    const validateSignin = async (): Promise<void> => {
+        let ret =  await loginUser(username, password);
+        if (ret === 0) {
+            setMessage("Error logging in");
+        } else if (ret === 2) {
+            setMessage("Wrong username or password");
+        } else {
+            setMessage("Logged in");
+        }
+
     }
 
     const clearInputs = () => {

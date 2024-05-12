@@ -69,3 +69,35 @@ const checkUserExists = async (data: any): Promise<boolean> => {
         return true;
     }
 };
+
+
+export const createUser = async (username: string, email: string, password: string): Promise<boolean> => {
+    try {
+        console.log("creating user " + username + " " + email);
+        const response = await POSTJsonRequest(TEMP_HOST + "/api/user/create", {
+            username: username,
+            email: email,
+            password: password
+        });
+        console.log("data exists: " + response.ret);
+        return response.ret;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
+export const loginUser = async (username: string, password: string): Promise<number> => { // 0 - fail, 1 - success 2 - wrong password or username
+    try {
+        console.log("login user " + username);
+        const response = await POSTJsonRequest(TEMP_HOST + "/api/user/login", {
+            username: username,
+            password: password
+        });
+        console.log("data exists: " + response.ret);
+        return response.ret ? 1 : 2;
+    } catch (error) {
+        console.error(error);
+        return 0;
+    }
+}

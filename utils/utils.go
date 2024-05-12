@@ -6,6 +6,7 @@ import (
 	"math"
 	"math/rand"
 	"os"
+	"regexp"
 	"time"
 )
 
@@ -18,7 +19,7 @@ func ReadFile(filename string) string {
 	return string(data)
 }
 
-func encryptText(text string, salt string) []byte {
+func EncryptText(text string, salt string) []byte {
 	var joinedText = salt + text
 	var hash = sha256.New()
 	hash.Write([]byte(joinedText))
@@ -28,7 +29,7 @@ func encryptText(text string, salt string) []byte {
 
 }
 
-func randomString(minimum int, maximum int) string {
+func RandomString(minimum int, maximum int) string {
 	const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&"
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	var diff = int(math.Abs(float64(maximum - minimum)))
@@ -40,4 +41,10 @@ func randomString(minimum int, maximum int) string {
 	}
 
 	return string(b)
+}
+
+func RegexCheck(regex string, text string) bool {
+	var re = regexp.MustCompile(regex)
+
+	return re.MatchString(text)
 }

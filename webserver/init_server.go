@@ -38,4 +38,6 @@ func StartAuthRoutes(authRouter *gin.RouterGroup) {
 
 func StartAPIRoutes(apiRouter *gin.RouterGroup) {
 	apiRouter.POST("/user/exists", userExistsPOSTHandler)
+	apiRouter.POST("/user/create", userCreatePOSTHandler)
+	apiRouter.POST("/user/login", userCheckPOSTHandler)
 }
