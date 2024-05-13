@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/joho/godotenv"
 	"skrblikoid/model"
 	"skrblikoid/webserver"
 
@@ -9,6 +10,11 @@ import (
 
 func main() {
 	// load env variables
+	if err := godotenv.Load(); err != nil {
+		panic(err)
+	}
+
+	model.Database = model.InitDB()
 
 	model.AutoMigrate(model.Database)
 

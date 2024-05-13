@@ -49,23 +49,23 @@ func QueryUserCreate(username string, email string, password string) error {
 	return nil
 }
 
-func QueryUserLoginExists(username string, password string) (bool, error) {
+func QueryUserLoginExists(username string, password string) (bool, User, error) {
 	ret, user, errUsername := QueryUsernameExists(username)
 
 	if errUsername != nil {
-		return false, errUsername
+		return false, user, errUsername
 	}
 
 	if !ret {
-		return false, nil
+		return false, user, nil
 	}
 
 	var sentPasswd = utils.EncryptText(password, user.Salt)
 
 	if bytes.Equal(sentPasswd, user.Password) {
 		fmt.Println("Password is correct!")
-		return true, nil
+		return true, user, nil
 	} else {
-		return false, nil
+		return false, user, nil
 	}
 }

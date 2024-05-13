@@ -91,11 +91,18 @@ func userCheckPOSTHandler(c *gin.Context) {
 		sendError(c, 400, err.Error())
 	}
 
-	ret, err := model.QueryUserLoginExists(requestData.Username, requestData.Password)
+	ret, user, err := model.QueryUserLoginExists(requestData.Username, requestData.Password)
 
 	if err != nil {
 		sendError(c, 500, err.Error())
 		return
 	}
+
+	session, _ := cookieStore.Get(c.Request, "session")
+	session.Values["user"] = user
+	if errSession := session.Save(c.Request, c.Writer); errSession != nil {
+		sendError(c, 500, errSession.Error())
+	}
+
 	c.JSON(200, gin.H{"ret": ret})
 }
