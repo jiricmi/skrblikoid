@@ -129,6 +129,7 @@ const validateSignup = async (): Promise<void> => {
             setMessage("Wrong username or password");
         } else {
             setMessage("Logged in");
+            window.location.href = "/profile/";
         }
 
     }

@@ -19,6 +19,7 @@ func StartServer() (server *gin.Engine, authRouter *gin.RouterGroup, apiRouter *
 	server.Use(gin.Recovery())
 	server.LoadHTMLGlob("templates/*.html")
 	server.Static("/assets", "./frontend/Components/Assets")
+	server.Static("/css", "./frontend/css")
 
 	authRouter = server.Group("/profile", authCheck)
 	apiRouter = server.Group("/api")
