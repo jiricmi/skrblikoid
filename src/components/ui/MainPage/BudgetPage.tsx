@@ -1,9 +1,7 @@
 import React from 'react';
 import {BudgetBlock, BudgetBlockAdd} from '@/components/ui/MainPage/BudgetBlock';
-import Title from '@/components/ui/upper_bar';
-import {Divider} from "@/components/ui/SideBar";
 
-const MainPage = () => {
+export const BudgetPage = () => {
     const blocks = [
         {name: "Název 1", amount: "$100"},
         {name: "Název 2", amount: "$200"},
@@ -19,5 +17,3 @@ const MainPage = () => {
         </div>
     );
 }
-
-export default MainPage;

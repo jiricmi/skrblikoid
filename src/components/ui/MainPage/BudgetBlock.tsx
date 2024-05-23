@@ -2,7 +2,7 @@ import React from 'react';
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
+    DialogDescription, DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger
@@ -15,6 +15,8 @@ interface BudgetBlockProps {
 }
 
 interface BudgetBlockDiv {
+    color?: string;
+    colorHover?: string;
     children: React.ReactNode;
 }
 
@@ -32,30 +34,30 @@ const BudgetBlock: React.FC<BudgetBlockProps> = ({name, amount}) => {
 
 const BudgetBlockAdd: React.FC = () => {
     return (
-        <BudgetBlockDiv>
         <Dialog>
-            <DialogTrigger>
-                <BudgetBlockDiv>
-                    <h2 className="text-lg font-semibold">+ Přidat</h2>
-                </BudgetBlockDiv>
+            <DialogTrigger asChild>
+                <button className="bg-green-400 hover:bg-green-500 w-80 h-48 m-3 flex justify-center items-center rounded-2xl">
+                    Add budget
+                </button>
+
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Create new budget</DialogTitle>
-                </DialogHeader>
+                    <DialogTitle>Create budget</DialogTitle>
                     <DialogDescription>
-                        <BudgetForm />
+                        Create new budget for your money!
                     </DialogDescription>
+                </DialogHeader>
+                <BudgetForm/>
             </DialogContent>
         </Dialog>
-            </BudgetBlockDiv>
 
     );
 }
 
-const BudgetBlockDiv: React.FC<BudgetBlockDiv> = ({children}) => {
+const BudgetBlockDiv: React.FC<BudgetBlockDiv> = ({color = "bg-gray-200 hover:bg-gray-400", children}) => {
     return (
-        <div className="bg-gray-200 hover:bg-gray-400 w-80 h-48 m-3 flex justify-center items-center rounded-2xl">
+        <div className={`${color} w-80 h-48 m-3 flex justify-center items-center rounded-2xl`}>
             {children}
         </div>
     );

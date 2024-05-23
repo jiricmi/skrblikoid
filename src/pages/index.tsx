@@ -1,10 +1,10 @@
-import MainPage from "@/components/ui/MainPage/MainPage";
 import {Page} from "@/components/ui/MainPage/Page";
+import {BudgetPage} from "@/components/ui/MainPage/BudgetPage";
 
 const Index = () => {
     return (
         <Page title="Dashboard">
-            <MainPage/>
+            <BudgetPage />
         </Page>
     )
 }
