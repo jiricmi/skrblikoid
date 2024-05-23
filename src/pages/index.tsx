@@ -1,7 +1,12 @@
+import MainPage from "@/components/ui/MainPage/MainPage";
+import {useState} from "react";
+import SideBar from "@/components/ui/SideBar";
+
 const Index = () => {
     return (
-        <div>
-        <h1>Index</h1>
+        <div className="flex">
+            <SideBar/>
+            <MainPage/>
         </div>
     )
 }
