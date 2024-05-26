@@ -1,4 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
+import {useNavigate} from "react-router";
+import Link from "next/link";
+
 
 interface SideBarProps {
     openMenu: boolean;
@@ -10,7 +13,8 @@ interface DividerProps {
 }
 
 interface NavItemBorderProps {
-    onClick?: () => void;
+    className?: string;
+    href?: string;
     children: React.ReactNode;
 }
 
@@ -40,12 +44,14 @@ export const Divider: React.FC<DividerProps> = ({color}) => {
     );
 }
 
-const NavItemBorder: React.FC<NavItemBorderProps> = ({onClick, children}) => {
+const NavItemBorder: React.FC<NavItemBorderProps> = ({className, href="/", children}) => {
     return (
-        <div onClick={onClick}
-             className="flex items-center p-2 mt-2 bg-blue-500 hover:bg-blue-600 transition-colors duration-100 rounded-lg">
-            {children}
-        </div>
+        <Link href={`${href}`}>
+            <div
+                className={`${className} flex items-center p-2 mt-2 bg-blue-500 hover:bg-blue-600 transition-colors duration-100 rounded-lg`}>
+                {children}
+            </div>
+        </Link>
 
     );
 }
@@ -81,7 +87,7 @@ const UnwrapperSideBar: React.FC<UnwrapperSideBarProps> = ({openMenu, setOpenMen
 const SideBarPanel: React.FC<SideBarPanelProps> = ({openMenu, children}) => {
     return (
         <div
-            className={`duration-300 h-screen p-5 pt-2 bg-blue-400 rounded-b-3xl ${openMenu ? 'lg:w-72 w-full z-50 absolute lg:relative' : 'lg:w-24 relative hidden duration-300 lg:block'}`}>
+            className={`duration-300 lg:h-screen p-5 pt-2 bg-blue-400 rounded-b-3xl ${openMenu ? 'lg:w-72 w-full z-50 absolute lg:relative' : 'lg:w-24 relative hidden duration-300 lg:block'}`}>
             {children}
         </div>
     )
@@ -99,9 +105,25 @@ export const SideBar: React.FC<SideBarProps> = ({openMenu, setOpenMenu}) => {
                     <Divider color={"bg-gray-100"}/>
                     <UnwrapperSideBar openMenu={openMenu} setOpenMenu={setOpenMenu}/>
                 </div>
+                <NavItemBorder href="/">
+                    <NavItemLogo src="/dashboard.svg" alt="Dashboard"/>
+                    <NavH2 openMenu={openMenu}>Dashboard</NavH2>
+                </NavItemBorder>
+                <NavItemBorder href="/category">
+                    <NavItemLogo src="/category.svg" alt="Category"/>
+                    <NavH2 openMenu={openMenu}>Categories</NavH2>
+                </NavItemBorder>
+                <NavItemBorder href="/currency">
+                    <NavItemLogo src="/currency.svg" alt="Currency"/>
+                    <NavH2 openMenu={openMenu}>Currencies</NavH2>
+                </NavItemBorder>
                 <NavItemBorder>
-                    <NavItemLogo src="/logo.svg" alt="logo"/>
-                    <NavH2 openMenu={openMenu}>Skrblikoid</NavH2>
+                    <NavItemLogo src="/import.svg" alt="Import"/>
+                    <NavH2 openMenu={openMenu}>Import</NavH2>
+                </NavItemBorder>
+                <NavItemBorder>
+                    <NavItemLogo src="/export.svg" alt="Export"/>
+                    <NavH2 openMenu={openMenu}>Export</NavH2>
                 </NavItemBorder>
             </SideBarPanel>
         </div>

@@ -1,6 +1,7 @@
 export const findFreeIndex = (prefix: string): number => {
     for (let i = 0; i < localStorage.length + 2; i++) {
-        const item = localStorage.getItem(`${prefix}_${i}`);
+        const item = localStorage.getItem(`${prefix}${i}`);
+        console.log(item);
         if (!item) {
             return i;
         }
