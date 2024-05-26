@@ -1,17 +1,7 @@
-import React from 'react';
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from "@/components/ui/downloaded/dialog";
+import React, {useState} from 'react';
 import BudgetForm from "@/components/ui/forms/BudgetForm";
 import {LSBudget} from "@/components/localStorage/budget";
-import {FormMessage} from "@/components/ui/forms/FormMessage";
-import {Block} from "@/components/ui/MainPage/Block";
+import {AddBlock, AddButtonModal, Block} from "@/components/ui/MainPage/Block";
 
 interface BudgetBlockProps {
     onClick?: () => void;
@@ -33,29 +23,16 @@ export const BudgetBlock: React.FC<BudgetBlockProps> = ({onClick, name, currency
     );
 }
 
-export const BudgetBlockAdd: React.FC<{ addBudget: (budget: LSBudget) => void }> = ({addBudget}) => {
-    const [formMessage, setFormMessage] = React.useState<string>("");
+export const BudgetBlockAdd: React.FC<{ addBudget: (budget: LSBudget) => void }> = ({ addBudget }) => {
+    const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
+
+    const openForm = () => setIsFormOpen(true);
+    const closeForm = () => setIsFormOpen(false);
+
     return (
-        <Dialog>
-        <DialogTrigger asChild>
-                <button
-                    className="bg-green-400 hover:bg-green-500 w-80 h-48 m-3 flex justify-center items-center rounded-2xl">
-                    Add budget
-                </button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>Create budget</DialogTitle>
-                    <DialogDescription>
-                        Create new budget for your money!
-                    </DialogDescription>
-                    <FormMessage message={formMessage}/>
-                </DialogHeader>
-                <BudgetForm addBudget={addBudget} setFormMessage={setFormMessage}/>
-                <DialogClose asChild onClick={() => setFormMessage("")}>
-                    <button className="bg-red-500 text-white rounded-lg p-1">Close</button>
-                </DialogClose>
-            </DialogContent>
-        </Dialog>
+        <AddButtonModal text="Add budget" isFormOpen={isFormOpen} openForm={openForm} closeForm={closeForm}>
+            <h1>Create new budget</h1>
+            <BudgetForm addBudget={addBudget} closeFormModal={closeForm} />
+        </AddButtonModal>
     );
-}
+};

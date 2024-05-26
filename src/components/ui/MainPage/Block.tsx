@@ -25,6 +25,14 @@ interface AddBlockProps {
     children?: React.ReactNode;
 }
 
+interface AddButtonModalProps {
+    text: string;
+    isFormOpen: boolean;
+    openForm: () => void;
+    closeForm: () => void;
+    children: React.ReactNode;
+}
+
 const BlockDiv: React.FC<BlockDivProps> = ({
                                                onClick,
                                                color,
@@ -67,3 +75,16 @@ export const AddBlock: React.FC<AddBlockProps> = ({text, openModal, closeModal, 
         </div>
     );
 }
+
+export const AddButtonModal: React.FC<AddButtonModalProps> = ({text, isFormOpen, openForm, closeForm, children}) => {
+    return (
+        <AddBlock text={text} openModal={openForm} closeModal={closeForm} isModalOpen={isFormOpen}>
+            {children}
+            <button
+                onClick={closeForm}
+                className="mt-4 bg-red-500 text-white font-bold py-1 px-4 rounded-lg w-full hover:bg-red-600 transition-colors duration-200">
+                Close
+            </button>
+        </AddBlock>
+    );
+};

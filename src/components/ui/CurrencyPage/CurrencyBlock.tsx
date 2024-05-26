@@ -1,6 +1,7 @@
 import React, {useState} from "react";
-import {AddBlock, Block} from "@/components/ui/MainPage/Block";
+import {AddBlock, AddButtonModal, Block} from "@/components/ui/MainPage/Block";
 import {CurrencyForm} from "@/components/ui/forms/CurrencyForm";
+import {LSCurrency} from "@/components/localStorage/currency";
 
 interface CurrencyBlockProps {
     onClick?: () => void;
@@ -34,15 +35,11 @@ export const CurrencyBlockAdd: React.FC<CurrencyBlockAddProps> = ({addCurrency})
 
     const openForm = () => setIsFormOpen(true);
     const closeForm = () => setIsFormOpen(false);
+
     return (
-        <AddBlock text="Add currency" openModal={openForm} closeModal={closeForm} isModalOpen={isFormOpen}>
+        <AddButtonModal text="Add currency" isFormOpen={isFormOpen} openForm={openForm} closeForm={closeForm}>
             <h1>Create new currency</h1>
-            <CurrencyForm closeFormModal={closeForm} addCurrency={addCurrency}/>
-            <button
-                onClick={closeForm}
-                className="mt-4 bg-red-500 text-white font-bold py-1 px-4 rounded-lg w-full hover:bg-red-600 transition-colors duration-200">
-                Close
-            </button>
-        </AddBlock>
-    )
-}
+            <CurrencyForm addCurrency={addCurrency} closeFormModal={closeForm} />
+        </AddButtonModal>
+    );
+};
