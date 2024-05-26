@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {BudgetBlock, BudgetBlockAdd} from '@/components/ui/BudgetPage/BudgetBlock';
-import {getBudgets, LSBudget} from '@/components/budgets/budget';
+import {getBudgets, LSBudget} from '@/components/localStorage/budget';
 import {BlockPage} from '@/components/ui/MainPage/BlockPage';
 
 export const BudgetPage = () => {

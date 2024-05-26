@@ -1,6 +1,5 @@
 import React from 'react';
-import {handleBudgetFormSubmit, LSBudget} from "@/components/budgets/budget";
-import {DialogClose} from "@/components/ui/downloaded/dialog";
+import {handleBudgetFormSubmit, LSBudget} from "@/components/localStorage/budget";
 
 interface BudgetFormProps {
     addBudget: (budget: LSBudget) => void;
@@ -11,7 +10,7 @@ interface BudgetFormProps {
 const BudgetForm: React.FC<BudgetFormProps> = ({addBudget, setFormMessage}) => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         const newBudget = await handleBudgetFormSubmit(event, setFormMessage);
-        // @ts-ignore
+        if (newBudget == null) return;
         addBudget(newBudget);
     };
 
