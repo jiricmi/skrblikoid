@@ -1,4 +1,4 @@
-import {Divider} from "@/components/ui/SideBar";
+import {Divider} from "@/components/ui/MainPage/SideBar";
 import React from "react";
 
 interface TopBarProps {

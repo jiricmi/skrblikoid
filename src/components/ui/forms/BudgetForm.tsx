@@ -1,6 +1,6 @@
 import React from 'react';
 import {handleBudgetFormSubmit, LSBudget} from "@/components/budgets/budget";
-import {DialogClose} from "@/components/ui/dialog";
+import {DialogClose} from "@/components/ui/downloaded/dialog";
 
 interface BudgetFormProps {
     addBudget: (budget: LSBudget) => void;
