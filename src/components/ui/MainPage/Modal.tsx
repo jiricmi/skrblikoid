@@ -17,6 +17,9 @@ interface YesNoModalProps {
 
 export const Modal: FC<ModalProps> = ({isOpen, onClose, children}) => {
     if (!isOpen) return null;
+    document.onkeydown = (event) => {
+        if (event.key === "Escape") onClose();
+    }
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -39,14 +42,27 @@ export const YesNoModal: FC<YesNoModalProps> = ({isOpen, onClose, onYes, onNo, c
             <div>
                 {children}
                 <div className="mt-3">
-                    <button className="bg-blue-400 rounded-lg py-1 px-3 hover:bg-blue-500 duration-200 text-white w-1/2"
-                            onClick={onYes}>Yes
+                    <button
+                        className="bg-blue-400 rounded-lg py-1 px-3 hover:bg-blue-500 duration-200 text-white w-1/2"
+                        onClick={onYes}>Yes
                     </button>
-                    <button className="bg-red-400 rounded-lg py-1 px-3 hover:bg-red-500 duration-300 text-white w-1/2"
-                            onClick={onNo}>No
+                    <button
+                        className="bg-red-400 rounded-lg py-1 px-3 hover:bg-red-500 duration-300 text-white w-1/2"
+                        onClick={onNo}>No
                     </button>
                 </div>
             </div>
         </Modal>
     )
+}
+
+export const FormModal: FC<ModalProps> = ({isOpen, onClose, children}) => {
+    return (
+        <Modal isOpen={isOpen} onClose={onClose}>
+            {children}
+            <button className="bg-red-400 rounded-lg py-1 px-3 hover:bg-red-500 duration-300 text-white w-full mt-2"
+                    onClick={onClose}>Close
+            </button>
+        </Modal>
+    );
 }

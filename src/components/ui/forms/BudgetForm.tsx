@@ -1,6 +1,6 @@
 import React from 'react';
 import {handleBudgetFormSubmit, LSBudget} from "@/components/localStorage/budget";
-import {Form, FormInput, FormLabel, FormMessage, FormSelect} from "@/components/ui/forms/Form";
+import {Form, FormInput, FormLabel, FormMessage, FormSelect, SubmitButton} from "@/components/ui/forms/Form";
 import {getAllCurrenciesName} from "@/components/localStorage/currency";
 
 interface BudgetFormProps {
@@ -39,7 +39,7 @@ const BudgetForm: React.FC<BudgetFormProps> = ({addBudget, closeFormModal}) => {
                     <FormInput type="color" name="budgetColor"/>
                 </FormLabel>
                 <FormMessage message={formMessage}/>
-                <button className="bg-blue-500 text-white rounded-lg p-1">Submit</button>
+                <SubmitButton>Submit</SubmitButton>
             </Form>
         </div>
     );

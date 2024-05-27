@@ -86,7 +86,6 @@ export const CurrencyForm: React.FC<CurrencyFormProps> = ({addCurrency, closeFor
                 <FormMessage message={formMessage}/>
                 <SubmitButton>Submit</SubmitButton>
             </Form>
-            <button className="bg-red-500 text-white rounded-lg w-full p-1 mt-2" onClick={closeFormModal}>Cancel</button>
         </div>
     );
 };

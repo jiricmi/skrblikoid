@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {className} from "postcss-selector-parser";
-import {Modal} from "@/components/ui/MainPage/Modal";
+import {FormModal, Modal} from "@/components/ui/MainPage/Modal";
 
 interface BlockDivProps {
     onClick?: () => void;
@@ -77,9 +77,9 @@ export const AddBlock: React.FC<AddBlockProps> = ({text, openModal, closeModal, 
                     </div>
                 </div>
             </Block>
-            <Modal isOpen={isModalOpen} onClose={closeModal}>
+            <FormModal isOpen={isModalOpen} onClose={closeModal}>
                 {children}
-            </Modal>
+            </FormModal>
         </div>
     );
 }
