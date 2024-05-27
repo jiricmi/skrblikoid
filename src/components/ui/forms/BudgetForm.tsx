@@ -30,7 +30,7 @@ const BudgetForm: React.FC<BudgetFormProps> = ({addBudget, closeFormModal}) => {
                     <FormSelect name="budgetCurrency">
                         {
                             currencies.map((currency, index) => (
-                                <option key={index} value={currency}>{currency}</option>
+                                <option key={index} value={index}>{currency}</option>
                             ))
                         }
                     </FormSelect>

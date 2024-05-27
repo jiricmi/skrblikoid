@@ -7,7 +7,15 @@ interface ModalProps {
     children: React.ReactNode;
 }
 
-const Modal: FC<ModalProps> = ({isOpen, onClose, children}) => {
+interface YesNoModalProps {
+    children: React.ReactNode;
+    isOpen: boolean;
+    onClose: () => void;
+    onYes?: () => void;
+    onNo?: () => void;
+}
+
+export const Modal: FC<ModalProps> = ({isOpen, onClose, children}) => {
     if (!isOpen) return null;
 
     return (
@@ -23,4 +31,22 @@ const Modal: FC<ModalProps> = ({isOpen, onClose, children}) => {
     );
 };
 
-export default Modal;
+export const YesNoModal: FC<YesNoModalProps> = ({isOpen, onClose, onYes, onNo, children}) => {
+    onYes = onYes || onClose;
+    onNo = onNo || onClose;
+    return (
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <div>
+                {children}
+                <div className="mt-3">
+                    <button className="bg-blue-400 rounded-lg py-1 px-3 hover:bg-blue-500 duration-200 text-white w-1/2"
+                            onClick={onYes}>Yes
+                    </button>
+                    <button className="bg-red-400 rounded-lg py-1 px-3 hover:bg-red-500 duration-300 text-white w-1/2"
+                            onClick={onNo}>No
+                    </button>
+                </div>
+            </div>
+        </Modal>
+    )
+}

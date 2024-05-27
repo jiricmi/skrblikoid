@@ -1,5 +1,6 @@
 import {findFreeIndex, saveToLocalStorage} from "@/components/localStorage/localStorage";
 import React from "react";
+import {getAllCurrenciesName} from "@/components/localStorage/currency";
 
 export interface LSBudget {
     key: number;
@@ -33,7 +34,7 @@ export const handleBudgetFormSubmit = async (event: React.FormEvent<HTMLFormElem
         return null;
     }
 
-    if (currency === "None") {
+    if (getAllCurrenciesName().length == 0) {
         setFormMessage("Error: Please create a currency first!");
         return null;
     }

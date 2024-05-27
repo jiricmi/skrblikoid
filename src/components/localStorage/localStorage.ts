@@ -28,3 +28,11 @@ export const loadFromLocalStorage = (key: string): any => {
         console.error(e);
     }
 }
+
+export const deleteFromLocalStorage = (key: string) => {
+    try {
+        localStorage.removeItem(key);
+    } catch (e) {
+        console.error(e);
+    }
+}

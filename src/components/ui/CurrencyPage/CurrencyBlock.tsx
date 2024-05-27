@@ -1,46 +1,64 @@
 import React, {useState} from "react";
 import {AddButtonModal, AddEditDeleteBar, Block} from "@/components/ui/MainPage/Block";
 import {CurrencyForm} from "@/components/ui/forms/CurrencyForm";
-import {LSCurrency} from "@/components/localStorage/currency";
+import {deleteCurrency, getCurrency, LSCurrency} from "@/components/localStorage/currency";
+import {YesNoModal} from "@/components/ui/MainPage/Modal";
 
 interface CurrencyBlockProps {
     onClick?: () => void;
     currency: LSCurrency
+    currencies: LSCurrency[]
+    setCurrencies: (currency: LSCurrency[]) => void
 }
 
 interface CurrencyBlockAddProps {
     addCurrency: (newCurrency: any) => void;
 }
 
-export const CurrencyBlock: React.FC<CurrencyBlockProps> = ({ onClick, currency}) => {
+export const CurrencyBlock: React.FC<CurrencyBlockProps> = ({onClick, currency, currencies, setCurrencies}) => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
+    const [isOpenDelete, setOpenDelete] = useState<boolean>(false);
+
+    const openDeleteModal = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        setOpenDelete(true);
+    }
+
+    const closeDeleteModal = () => setOpenDelete(false);
 
     const handleEdit = (e: React.MouseEvent<HTMLButtonElement>, key: number) => {
         e.stopPropagation()
     }
 
-    const handleDelete = (e: React.MouseEvent<HTMLButtonElement>, key: number) => {
-        e.stopPropagation();
-        console.log("delete " + "currency_" + key)
+    const handleDelete = (key: number) => {
+        deleteCurrency(key)
+        setCurrencies(getCurrency())
 
     }
 
     const currencySym = (amount: string) => currency.postfix ? amount + " " + currency.symbol : currency.symbol + " " + amount;
 
     return (
-        <Block onClick={onClick} color={currency.color}>
-            <div
-                className="flex items-center justify-center h-full"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-            >
-                <div className="text-center">
-                    <h2 className="text-xl font-semibold">{currency.name}</h2>
-                    <p className="text-sm font-semibold">{currencySym("1")} is {currency.rate} USD</p>
-                    <AddEditDeleteBar id={currency.key} onEdit={handleEdit} onDelete={handleDelete} isHovered={isHovered}/>
+        <div>
+            <Block onClick={onClick} color={currency.color}>
+                <div
+                    className="flex items-center justify-center h-full"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    <div className="text-center">
+                        <h2 className="text-xl font-semibold">{currency.name}</h2>
+                        <p className="text-sm font-semibold">{currencySym("1")} is {currency.rate} USD</p>
+                        <AddEditDeleteBar id={currency.key} onEdit={handleEdit} onDelete={openDeleteModal}
+                                          isHovered={isHovered}/>
+                    </div>
                 </div>
-            </div>
-        </Block>
+
+            </Block>
+            <YesNoModal isOpen={isOpenDelete} onClose={closeDeleteModal} onYes={() => handleDelete(currency.key)}>
+                <h1>Are you sure you want to delete this currency?</h1>
+            </YesNoModal>
+        </div>
     );
 }
 

@@ -19,10 +19,9 @@ export const CurrencyPage = () => {
     return (
         <BlockPage>
             {currencies.map((currency) => (
-                <CurrencyBlock key={currency.key} currency={currency}/>
+                <CurrencyBlock key={currency.key} currency={currency} currencies={currencies} setCurrencies={setCurrencies}/>
             ))}
             <CurrencyBlockAdd addCurrency={addCurrency}/>
-
         </BlockPage>
     );
 }

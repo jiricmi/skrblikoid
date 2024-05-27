@@ -99,3 +99,7 @@ const checkNameExists = (name: string) => {
     return false;
 }
 
+export const deleteCurrency = (key: number) => {
+    // find all budgets that use this currency and delete them
+    localStorage.removeItem(`currency_${key}`);
+}
