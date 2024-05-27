@@ -1,23 +1,24 @@
 import React, {useState} from "react";
-import {AddButtonModal, AddEditDeleteBar, Block} from "@/components/ui/MainPage/Block";
+import {AddBlock, AddEditDeleteBar, Block} from "@/components/ui/MainPage/Block";
 import {CurrencyForm} from "@/components/ui/forms/CurrencyForm";
 import {deleteCurrency, getCurrency, LSCurrency} from "@/components/localStorage/currency";
-import {YesNoModal} from "@/components/ui/MainPage/Modal";
+import {Modal, YesNoModal} from "@/components/ui/MainPage/Modal";
 
 interface CurrencyBlockProps {
     onClick?: () => void;
     currency: LSCurrency
     currencies: LSCurrency[]
-    setCurrencies: (currency: LSCurrency[]) => void
+    addCurrency: (currency: any) => void
 }
 
 interface CurrencyBlockAddProps {
     addCurrency: (newCurrency: any) => void;
 }
 
-export const CurrencyBlock: React.FC<CurrencyBlockProps> = ({onClick, currency, currencies, setCurrencies}) => {
+export const CurrencyBlock: React.FC<CurrencyBlockProps> = ({onClick, currency, currencies, addCurrency}) => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const [isOpenDelete, setOpenDelete] = useState<boolean>(false);
+    const [isOpenEdit, setOpenEdit] = useState<boolean>(false);
 
     const openDeleteModal = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
@@ -26,13 +27,20 @@ export const CurrencyBlock: React.FC<CurrencyBlockProps> = ({onClick, currency, 
 
     const closeDeleteModal = () => setOpenDelete(false);
 
+    const openEditModal = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        setOpenEdit(true);
+    }
+
+    const closeEditModal = () => setOpenEdit(false);
+
     const handleEdit = (e: React.MouseEvent<HTMLButtonElement>, key: number) => {
         e.stopPropagation()
     }
 
     const handleDelete = (key: number) => {
         deleteCurrency(key)
-        setCurrencies(getCurrency())
+        addCurrency(undefined)
 
     }
 
@@ -49,7 +57,7 @@ export const CurrencyBlock: React.FC<CurrencyBlockProps> = ({onClick, currency, 
                     <div className="text-center">
                         <h2 className="text-xl font-semibold">{currency.name}</h2>
                         <p className="text-sm font-semibold">{currencySym("1")} is {currency.rate} USD</p>
-                        <AddEditDeleteBar id={currency.key} onEdit={handleEdit} onDelete={openDeleteModal}
+                        <AddEditDeleteBar id={currency.key} onEdit={openEditModal} onDelete={openDeleteModal}
                                           isHovered={isHovered}/>
                     </div>
                 </div>
@@ -58,6 +66,10 @@ export const CurrencyBlock: React.FC<CurrencyBlockProps> = ({onClick, currency, 
             <YesNoModal isOpen={isOpenDelete} onClose={closeDeleteModal} onYes={() => handleDelete(currency.key)}>
                 <h1>Are you sure you want to delete this currency?</h1>
             </YesNoModal>
+            <Modal isOpen={isOpenEdit} onClose={closeEditModal}>
+                <h1>Edit currency</h1>
+                <CurrencyForm addCurrency={addCurrency} closeFormModal={closeEditModal} currency={currency}/>
+            </Modal>
         </div>
     );
 }
@@ -70,9 +82,9 @@ export const CurrencyBlockAdd: React.FC<CurrencyBlockAddProps> = ({addCurrency})
     const closeForm = () => setIsFormOpen(false);
 
     return (
-        <AddButtonModal text="Add currency" isFormOpen={isFormOpen} openForm={openForm} closeForm={closeForm}>
+        <AddBlock text="Add currency" isModalOpen={isFormOpen} openModal={openForm} closeModal={closeForm}>
             <h1>Create new currency</h1>
             <CurrencyForm addCurrency={addCurrency} closeFormModal={closeForm}/>
-        </AddButtonModal>
+        </AddBlock>
     );
 };

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import BudgetForm from "@/components/ui/forms/BudgetForm";
 import {LSBudget} from "@/components/localStorage/budget";
-import {AddButtonModal, Block} from "@/components/ui/MainPage/Block";
+import {AddBlock, Block} from "@/components/ui/MainPage/Block";
 
 interface BudgetBlockProps {
     onClick?: () => void;
@@ -30,9 +30,9 @@ export const BudgetBlockAdd: React.FC<{ addBudget: (budget: LSBudget) => void }>
     const closeForm = () => setIsFormOpen(false);
 
     return (
-        <AddButtonModal text="Add budget" isFormOpen={isFormOpen} openForm={openForm} closeForm={closeForm}>
+        <AddBlock text="Add budget" isModalOpen={isFormOpen} openModal={openForm} closeModal={closeForm}>
             <h1>Create new budget</h1>
             <BudgetForm addBudget={addBudget} closeFormModal={closeForm} />
-        </AddButtonModal>
+        </AddBlock>
     );
 };

@@ -12,7 +12,7 @@ export interface LSCurrency {
 
 type SetFormMessage = (message: string) => void;
 
-export const handleCurrencyFormSubmit = async (event: React.FormEvent<HTMLFormElement>, setFormMessage: SetFormMessage): Promise<LSCurrency | null> => {
+export const handleCurrencyFormSubmit = async (event: React.FormEvent<HTMLFormElement>, setFormMessage: SetFormMessage, editKey?: number): Promise<LSCurrency | null> => {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -31,7 +31,7 @@ export const handleCurrencyFormSubmit = async (event: React.FormEvent<HTMLFormEl
         setFormMessage("Error: The name 'None' is reserved!");
     }
 
-    if (name.length > 30) {
+    if (name.length > 15) {
         setFormMessage("Error: Name is too long!");
         return null;
     }
@@ -39,12 +39,22 @@ export const handleCurrencyFormSubmit = async (event: React.FormEvent<HTMLFormEl
         setFormMessage("Error: Rate must be a positive number!");
         return null;
     }
-    if (checkNameExists(name)) {
+    // if editKey is undefined, it means we are creating a new currency
+    if (editKey === undefined && checkNameExists(name)) {
         setFormMessage("Error: Name already exists!");
         return null;
     }
 
-    let index = findFreeIndex('currency_');
+    let index;
+    if (editKey === undefined) {
+        index = findFreeIndex('currency_');
+    } else {
+        index = getByKey(editKey)?.key;
+        if (index === undefined) {
+            setFormMessage("Error: Currency not found!");
+            return null;
+        }
+    }
     form.reset();
 
     let jsoned_data: LSCurrency = {
@@ -97,6 +107,14 @@ const checkNameExists = (name: string) => {
         }
     }
     return false;
+}
+
+const getByKey = (key: number): LSCurrency | null => {
+    const item = localStorage.getItem(`currency_${key}`);
+    if (item) {
+        return JSON.parse(item);
+    }
+    return null;
 }
 
 export const deleteCurrency = (key: number) => {

@@ -6,20 +6,24 @@ import {CurrencyBlock, CurrencyBlockAdd} from "@/components/ui/CurrencyPage/Curr
 export const CurrencyPage = () => {
     const [currencies, setCurrencies] = React.useState<LSCurrency[]>([]);
 
-
     useEffect(() => {
         setCurrencies(getCurrency());
     }, []);
 
 
-    const addCurrency = (newCurrency: LSCurrency) => {
+    const addCurrency = (newCurrency: LSCurrency | undefined) => {
+        if (newCurrency === undefined) {
+            setCurrencies(getCurrency());
+            return;
+        }
         setCurrencies((prevCurrencies) => [...prevCurrencies, newCurrency]);
     };
 
     return (
         <BlockPage>
-            {currencies.map((currency) => (
-                <CurrencyBlock key={currency.key} currency={currency} currencies={currencies} setCurrencies={setCurrencies}/>
+            {currencies && currencies.map((currency) => (
+                <CurrencyBlock key={currency.key} currency={currency} currencies={currencies}
+                               addCurrency={addCurrency}/>
             ))}
             <CurrencyBlockAdd addCurrency={addCurrency}/>
         </BlockPage>

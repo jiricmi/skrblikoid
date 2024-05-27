@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {className} from "postcss-selector-parser";
-import Modal from "@/components/ui/MainPage/Modal";
+import {Modal} from "@/components/ui/MainPage/Modal";
 
 interface BlockDivProps {
     onClick?: () => void;
@@ -83,19 +83,6 @@ export const AddBlock: React.FC<AddBlockProps> = ({text, openModal, closeModal, 
         </div>
     );
 }
-
-export const AddButtonModal: React.FC<AddButtonModalProps> = ({text, isFormOpen, openForm, closeForm, children}) => {
-    return (
-        <AddBlock text={text} openModal={openForm} closeModal={closeForm} isModalOpen={isFormOpen}>
-            {children}
-            <button
-                onClick={closeForm}
-                className="mt-4 bg-red-500 text-white font-bold py-1 px-4 rounded-lg w-full hover:bg-red-600 transition-colors duration-200">
-                Close
-            </button>
-        </AddBlock>
-    );
-};
 
 export const AddEditDeleteBar: React.FC<AddEditDeleteBarProps> = ({id, onEdit, onDelete, isHovered = true}) => {
     return (
