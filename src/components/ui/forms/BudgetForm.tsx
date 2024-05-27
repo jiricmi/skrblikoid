@@ -1,6 +1,7 @@
 import React from 'react';
 import {handleBudgetFormSubmit, LSBudget} from "@/components/localStorage/budget";
 import {Form, FormInput, FormLabel, FormMessage, FormSelect} from "@/components/ui/forms/Form";
+import {getAllCurrenciesName} from "@/components/localStorage/currency";
 
 interface BudgetFormProps {
     addBudget: (budget: LSBudget) => void;
@@ -9,6 +10,8 @@ interface BudgetFormProps {
 
 const BudgetForm: React.FC<BudgetFormProps> = ({addBudget, closeFormModal}) => {
     const [formMessage, setFormMessage] = React.useState<string>("");
+    const currencies = getAllCurrenciesName();
+    if (currencies.length === 0) currencies.push("None");
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         const newBudget = await handleBudgetFormSubmit(event, setFormMessage);
@@ -25,9 +28,11 @@ const BudgetForm: React.FC<BudgetFormProps> = ({addBudget, closeFormModal}) => {
                 </FormLabel>
                 <FormLabel>Currency
                     <FormSelect name="budgetCurrency">
-                        <option value="usd">USD</option>
-                        <option value="czk">CZK</option>
-                        <option value="eur">EUR</option>
+                        {
+                            currencies.map((currency, index) => (
+                                <option key={index} value={currency}>{currency}</option>
+                            ))
+                        }
                     </FormSelect>
                 </FormLabel>
                 <FormLabel>Color

@@ -33,6 +33,14 @@ interface AddButtonModalProps {
     children: React.ReactNode;
 }
 
+interface AddEditDeleteBarProps {
+    id: number
+    onEdit: (e: React.MouseEvent<HTMLButtonElement>, key: number) => void;
+    onDelete: (e: React.MouseEvent<HTMLButtonElement>, key: number) => void;
+    isHovered?: boolean;
+
+}
+
 const BlockDiv: React.FC<BlockDivProps> = ({
                                                onClick,
                                                color,
@@ -88,3 +96,16 @@ export const AddButtonModal: React.FC<AddButtonModalProps> = ({text, isFormOpen,
         </AddBlock>
     );
 };
+
+export const AddEditDeleteBar: React.FC<AddEditDeleteBarProps> = ({id, onEdit, onDelete, isHovered = true}) => {
+    return (
+        <div className={`transition-all duration-300 transform ${isHovered ? 'lg:visible' : 'lg:hidden'}`}>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white px-4 rounded mr-3 mt-6" onClick={(e) => onEdit(e, id)}>
+                Edit
+            </button>
+            <button className="bg-red-500 hover:bg-red-700 text-white px-4 rounded mt-6" onClick={(e) => onDelete(e, id)}>
+                Delete
+            </button>
+        </div>
+    );
+}

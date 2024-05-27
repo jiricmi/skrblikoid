@@ -33,6 +33,11 @@ export const handleBudgetFormSubmit = async (event: React.FormEvent<HTMLFormElem
         return null;
     }
 
+    if (currency === "None") {
+        setFormMessage("Error: Please create a currency first!");
+        return null;
+    }
+
 
     let index = findFreeIndex('budget_');
     form.reset();

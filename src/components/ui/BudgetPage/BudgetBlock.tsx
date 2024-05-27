@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import BudgetForm from "@/components/ui/forms/BudgetForm";
 import {LSBudget} from "@/components/localStorage/budget";
-import {AddBlock, AddButtonModal, Block} from "@/components/ui/MainPage/Block";
+import {AddButtonModal, Block} from "@/components/ui/MainPage/Block";
 
 interface BudgetBlockProps {
     onClick?: () => void;

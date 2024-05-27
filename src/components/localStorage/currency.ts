@@ -27,6 +27,10 @@ export const handleCurrencyFormSubmit = async (event: React.FormEvent<HTMLFormEl
         return null;
     }
 
+    if (name === "None") {
+        setFormMessage("Error: The name 'None' is reserved!");
+    }
+
     if (name.length > 30) {
         setFormMessage("Error: Name is too long!");
         return null;
@@ -70,6 +74,18 @@ export const getCurrency = (): LSCurrency[] => {
     return currencies;
 }
 
+export const getAllCurrenciesName = (): string[] => {
+    let currencies: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const item = localStorage.getItem(`currency_${i}`);
+        if (item) {
+            const parsedItem = JSON.parse(item);
+            currencies.push(parsedItem.name);
+        }
+    }
+    return currencies;
+}
+
 const checkNameExists = (name: string) => {
     for (let i = 0; i < localStorage.length; i++) {
         const item = localStorage.getItem(`currency_${i}`);
@@ -82,3 +98,4 @@ const checkNameExists = (name: string) => {
     }
     return false;
 }
+
