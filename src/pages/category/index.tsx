@@ -1,10 +1,10 @@
 import {Page} from "@/components/ui/MainPage/Page";
-import {CurrencyPage} from "@/components/ui/CurrencyPage/CurrencyPage";
+import {CategoryPage} from "@/components/ui/CategoryPage/CategoryPage";
 
 const Index = () => {
     return (
         <Page title="Categories">
-            <p>to je fakt pes</p>
+            <CategoryPage/>
         </Page>
     )
 }

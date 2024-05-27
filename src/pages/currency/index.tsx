@@ -4,7 +4,6 @@ const Index = () => {
     return (
         <Page title="Currencies">
             <CurrencyPage/>
-
         </Page>
     )
 }

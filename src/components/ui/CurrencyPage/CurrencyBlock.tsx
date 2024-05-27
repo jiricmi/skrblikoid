@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import {AddBlock, AddEditDeleteBar, Block} from "@/components/ui/MainPage/Block";
 import {CurrencyForm} from "@/components/ui/forms/CurrencyForm";
-import {deleteCurrency, getCurrency, LSCurrency} from "@/components/localStorage/currency";
-import {Modal, YesNoModal} from "@/components/ui/MainPage/Modal";
+import {deleteCurrency, LSCurrency} from "@/components/localStorage/currency";
+import {FormModal, YesNoModal} from "@/components/ui/MainPage/Modal";
 
 interface CurrencyBlockProps {
     onClick?: () => void;
@@ -34,10 +34,6 @@ export const CurrencyBlock: React.FC<CurrencyBlockProps> = ({onClick, currency, 
 
     const closeEditModal = () => setOpenEdit(false);
 
-    const handleEdit = (e: React.MouseEvent<HTMLButtonElement>, key: number) => {
-        e.stopPropagation()
-    }
-
     const handleDelete = (key: number) => {
         deleteCurrency(key)
         addCurrency(undefined)
@@ -65,11 +61,12 @@ export const CurrencyBlock: React.FC<CurrencyBlockProps> = ({onClick, currency, 
             </Block>
             <YesNoModal isOpen={isOpenDelete} onClose={closeDeleteModal} onYes={() => handleDelete(currency.key)}>
                 <h1>Are you sure you want to delete this currency?</h1>
+                <p className="text-sm">With this, you will also delete all budgets, works on this currency!</p>
             </YesNoModal>
-            <Modal isOpen={isOpenEdit} onClose={closeEditModal}>
+            <FormModal isOpen={isOpenEdit} onClose={closeEditModal}>
                 <h1>Edit currency</h1>
                 <CurrencyForm addCurrency={addCurrency} closeFormModal={closeEditModal} currency={currency}/>
-            </Modal>
+            </FormModal>
         </div>
     );
 }
