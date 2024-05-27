@@ -1,3 +1,4 @@
+'use client';
 export const findFreeIndex = (prefix: string): number => {
     for (let i = 0; i < localStorage.length + 2; i++) {
         const item = localStorage.getItem(`${prefix}${i}`);
@@ -9,7 +10,7 @@ export const findFreeIndex = (prefix: string): number => {
     throw new Error('No free index found');
 }
 
-export const saveToLocalStorage = (key: string, data: any) => {
+export const saveToLocalStorage = (key: string, data: any): void => {
     try {
         localStorage.setItem(key, JSON.stringify(data));
     } catch (e) {
@@ -29,7 +30,7 @@ export const loadFromLocalStorage = (key: string): any => {
     }
 }
 
-export const deleteFromLocalStorage = (key: string) => {
+export const deleteFromLocalStorage = (key: string): void => {
     try {
         localStorage.removeItem(key);
     } catch (e) {

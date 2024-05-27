@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
-import {className} from "postcss-selector-parser";
-import {FormModal, Modal} from "@/components/ui/MainPage/Modal";
+import React from 'react';
+import {FormModal} from "@/components/ui/MainPage/Modal";
 
 interface BlockDivProps {
     onClick?: () => void;

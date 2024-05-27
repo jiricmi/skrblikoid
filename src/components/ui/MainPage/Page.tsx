@@ -7,7 +7,7 @@ import {
 
 interface PageProps {
     title: string;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 export const Page: React.FC<PageProps> = ({title, children}) => {

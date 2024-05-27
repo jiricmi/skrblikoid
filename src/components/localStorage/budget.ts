@@ -1,3 +1,4 @@
+'use client';
 import {findFreeIndex, saveToLocalStorage} from "@/components/localStorage/localStorage";
 import React from "react";
 import {getAllCurrenciesName} from "@/components/localStorage/currency";
@@ -79,4 +80,12 @@ const checkNameExists = (name: string): boolean => {
         }
     }
     return false;
+}
+
+export const getBudgetByKey = (key: number): LSBudget | null => {
+    const item = localStorage.getItem(`budget_${key}`);
+    if (item) {
+        return JSON.parse(item);
+    }
+    return null;
 }

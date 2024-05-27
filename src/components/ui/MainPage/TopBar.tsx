@@ -13,7 +13,7 @@ interface TitleProps {
 
 const Title: React.FC<TitleProps> = ({text}) => {
     return (
-        <h1 className=" text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-800">
+        <h1 className=" text-5xl lg:text-5xl pb-3 font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-800">
             {text}
         </h1>
     );

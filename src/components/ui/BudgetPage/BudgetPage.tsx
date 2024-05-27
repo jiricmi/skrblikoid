@@ -16,10 +16,10 @@ export const BudgetPage = () => {
 
     return (
         <BlockPage>
-                {budgets.map((budget) => (
-                    <BudgetBlock key={budget.name} name={budget.name} currency={budget.currency} color={budget.color} />
-                ))}
-                <BudgetBlockAdd addBudget={addBudget}/>
+            {budgets.map((budget) => (
+                <BudgetBlock key={budget.key} budget={budget}/>
+            ))}
+            <BudgetBlockAdd addBudget={addBudget}/>
         </BlockPage>
     );
 }
