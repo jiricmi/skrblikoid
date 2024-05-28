@@ -69,7 +69,6 @@ export const getCategory = (): LSCategory[] => {
 export const getCategoryByKey = (key: number): LSCategory | undefined => {
     const item = localStorage.getItem(`category_${key}`);
     if (item) {
-        console.log(item)
         return JSON.parse(item);
     }
     return undefined;

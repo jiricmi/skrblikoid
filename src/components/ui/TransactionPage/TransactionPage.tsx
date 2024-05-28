@@ -1,9 +1,17 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import {FormModal, YesNoModal} from "@/components/ui/MainPage/Modal";
-import {deleteTransaction, LSTransaction} from "@/components/localStorage/transaction";
-import {LSCategory} from "@/components/localStorage/category";
+import {
+    deleteTransaction,
+    getTransactionsByBudget,
+    LSTransaction,
+    transactionAmountString
+} from "@/components/localStorage/transaction";
+import {getCategoryByKey, LSCategory} from "@/components/localStorage/category";
 import {TransactionForm} from "@/components/ui/forms/TransactionForm";
 import {exportBudgetToCSV} from "@/components/localStorage/budget";
+import {Table, TableTd, TableTr} from "@/components/ui/MainPage/Table";
+import {Block} from "@/components/ui/MainPage/Block";
+import {useWindowSize} from "@react-hook/window-size";
 
 interface ButtonTransactionPanelProps {
     addTransaction: (newTransaction: LSTransaction | undefined) => void;
@@ -21,6 +29,23 @@ interface TransactionEditToolsProps {
     transaction: LSTransaction;
     addTransaction: (newTransaction: LSTransaction | undefined) => void;
 
+}
+
+interface TransactionTableProps {
+    budgetId: number;
+    transactions: LSTransaction[];
+    setTransactions: (transactions: any) => void;
+}
+
+
+interface TransactionSummaryProps {
+    className: string;
+    children: React.ReactNode;
+}
+
+interface TransactionGraphsProps {
+    budgetId: number,
+    transactions: LSTransaction[]
 }
 
 const getContrastColor = (hexColor: string): boolean => {
@@ -77,9 +102,10 @@ export const CategoryBadge: React.FC<{ category?: LSCategory }> = ({category}) =
 
 export const ExportBudget: React.FC<{ budgetId: number, type: string }> = ({budgetId, type}) => {
     return (
-        <div className="w-screen lg:w-auto lg:px-0 px-2 lg:mb-0 mb-2" >
-            <button className="w-full bg-blue-500 hover:bg-blue-600 duration-200 text-white font-bold lg:py-3 py-4 px-4 rounded-2xl"
-                    onClick={() => exportBudgetToCSV(budgetId)}>
+        <div className="w-screen lg:w-auto lg:px-0 px-2 lg:mb-0 mb-2">
+            <button
+                className="w-full bg-blue-500 hover:bg-blue-600 duration-200 text-white font-bold lg:py-3 py-4 px-4 rounded-2xl"
+                onClick={() => exportBudgetToCSV(budgetId)}>
                 Export to {type}
             </button>
         </div>
@@ -112,11 +138,6 @@ export const DeleteTransactionButton: React.FC<TransactionEditToolsProps> = ({tr
 
 export const EditTransactionButton: React.FC<TransactionEditToolsProps> = ({transaction, addTransaction}) => {
     const [isOpenForm, setIsOpenForm] = React.useState(false);
-
-    const handleEdit = (key: number) => {
-
-    }
-
     return (
         <div>
             <button onClick={() => setIsOpenForm(true)}>
@@ -137,5 +158,104 @@ export const TransactionEditTools: React.FC<TransactionEditToolsProps> = ({trans
             <DeleteTransactionButton transaction={transaction} addTransaction={addTransaction}/>
         </div>
     );
+}
 
+export const TransactionTable: React.FC<TransactionTableProps> = ({budgetId, transactions, setTransactions}) => {
+    let keys = ["Date", "Name", "Category", "Amount", "Action"];
+
+
+    useEffect(() => {
+        return setTransactions(getTransactionsByBudget(budgetId));
+    }, [budgetId, setTransactions]);
+
+    const addTransaction = (newTransaction: LSTransaction | undefined) => {
+        if (newTransaction === undefined) {
+            setTransactions(getTransactionsByBudget(budgetId));
+            return;
+        }
+        setTransactions((prevTransactions: any) => [...prevTransactions, newTransaction]);
+    }
+    return (
+        <div>
+            <ButtonTransactionPanel addTransaction={addTransaction} budget={budgetId}/>
+            <Table keys={keys} sm_hide={[0, 4]}>
+                {transactions.map((transaction) => (
+                    <TableTr key={transaction.key} color_green={transaction.type === "income"}>
+                        <TableTd sm_hidden>{transaction.date}</TableTd>
+                        <TableTd transaction={transaction} addTransaction={addTransaction}>{transaction.name}</TableTd>
+                        <TableTd><CategoryBadge category={getCategoryByKey(transaction.category)}/></TableTd>
+                        <TableTd transaction={transaction}
+                                 addTransaction={addTransaction}>{transactionAmountString(transaction.amount, transaction.type, budgetId)}</TableTd>
+                        <TableTd sm_hidden>
+                            <TransactionEditTools transaction={transaction} addTransaction={addTransaction}/>
+                        </TableTd>
+                    </TableTr>
+                ))}
+            </Table>
+        </div>
+    )
+}
+
+
+const TransactionBlockSummary: React.FC<TransactionSummaryProps> = ({className, children}) => {
+    return (<Block className={`${className} border-gray-200 border-2`}>
+            <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                    {children}
+                </div>
+            </div>
+        </Block>
+    );
+}
+
+
+export const TransactionGraphs: React.FC<TransactionGraphsProps> = ({budgetId, transactions}) => {
+    const [profit, setProfit] = React.useState<number>(0);
+    const [expenses, setExpenses] = React.useState<number>(0);
+    const [total, setTotal] = React.useState<number>(0);
+    const [count, setCount] = React.useState<number>(0);
+
+    useEffect(() => {
+        let profit = 0;
+        let expenses = 0;
+        let total = 0;
+        let count = 0;
+        transactions.forEach((transaction) => {
+            if (transaction.type === "income") {
+                profit += transaction.amount;
+                total += transaction.amount;
+            } else {
+                expenses += transaction.amount;
+                total -= transaction.amount;
+            }
+            count++;
+        });
+        setProfit(profit);
+        setExpenses(expenses);
+        setTotal(total);
+        setCount(count);
+    }, [transactions]);
+
+    const profit_string = transactionAmountString(profit, "income", budgetId);
+
+    return (
+        <div className={"lg:flex"}>
+            <TransactionBlockSummary className="bg-green-100">
+                <h1 className="text-3xl font-semibold">Profit</h1>
+                <p className="text-2xl font-semibold">{profit_string}</p>
+            </TransactionBlockSummary>
+            <TransactionBlockSummary className={"bg-red-100"}>
+                <h1 className="text-3xl font-semibold">Expenses</h1>
+                <p className="text-2xl font-semibold">{transactionAmountString(expenses, "profit", budgetId)}</p>
+            </TransactionBlockSummary>
+            <TransactionBlockSummary className={(total >= 0) ? "bg-green-100" : "bg-red-100"}>
+                <h1 className="text-3xl font-semibold">Total</h1>
+                <p className="text-2xl font-semibold">{transactionAmountString(Math.abs(total), (total < 0 ? "expense" : "profit"), budgetId)}</p>
+            </TransactionBlockSummary>
+            <TransactionBlockSummary className={(total >= 0) ? "bg-grey-100" : "bg-red-100"}>
+                <h1 className="text-3xl font-semibold">Count</h1>
+                <p className="text-2xl font-semibold">{count}</p>
+            </TransactionBlockSummary>
+        </div>
+    );
 }

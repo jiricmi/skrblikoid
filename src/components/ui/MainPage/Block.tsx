@@ -11,8 +11,8 @@ interface BlockDivProps {
 interface BlockProps {
     className?: string;
     onClick?: () => void;
-    color: string;
-    children: React.ReactNode;
+    color?: string;
+    children?: React.ReactNode;
 
 }
 
@@ -22,14 +22,6 @@ interface AddBlockProps {
     closeModal: () => void;
     isModalOpen: boolean;
     children?: React.ReactNode;
-}
-
-interface AddButtonModalProps {
-    text: string;
-    isFormOpen: boolean;
-    openForm: () => void;
-    closeForm: () => void;
-    children: React.ReactNode;
 }
 
 interface AddEditDeleteBarProps {
@@ -59,6 +51,10 @@ const BlockDiv: React.FC<BlockDivProps> = ({
 }
 
 export const Block: React.FC<BlockProps> = ({className, onClick, color, children}) => {
+    if (color === undefined) {
+        color = "#ffffff";
+    }
+
     return (
         <BlockDiv color={color} onClick={onClick} className={className}>
             {children}
@@ -86,10 +82,12 @@ export const AddBlock: React.FC<AddBlockProps> = ({text, openModal, closeModal, 
 export const AddEditDeleteBar: React.FC<AddEditDeleteBarProps> = ({id, onEdit, onDelete, isHovered = true}) => {
     return (
         <div className={`transition-all duration-300 transform ${isHovered ? 'lg:visible' : 'lg:hidden'}`}>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white px-4 rounded mr-3 mt-6" onClick={(e) => onEdit(e, id)}>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white px-4 rounded mr-3 mt-6"
+                    onClick={(e) => onEdit(e, id)}>
                 Edit
             </button>
-            <button className="bg-red-500 hover:bg-red-700 text-white px-4 rounded mt-6" onClick={(e) => onDelete(e, id)}>
+            <button className="bg-red-500 hover:bg-red-700 text-white px-4 rounded mt-6"
+                    onClick={(e) => onDelete(e, id)}>
                 Delete
             </button>
         </div>
