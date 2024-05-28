@@ -11,7 +11,12 @@ interface TransactionFormProps {
 }
 
 
-export const TransactionForm: React.FC<TransactionFormProps> = ({addTransaction, closeFormModal, transaction, budgetId}) => {
+export const TransactionForm: React.FC<TransactionFormProps> = ({
+                                                                    addTransaction,
+                                                                    closeFormModal,
+                                                                    transaction,
+                                                                    budgetId
+                                                                }) => {
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [name, setName] = React.useState<string>(transaction ? transaction.name : "");
     const [amount, setAmount] = React.useState<string>(transaction ? `${transaction.amount}` : "");
@@ -28,10 +33,14 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({addTransaction,
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log("submit")
-        const newTransaction = await handleTransactionFormSubmit(event, setFormMessage, budgetId);
-        if (newTransaction == null) return;
-        addTransaction(newTransaction);
+        if (transaction !== undefined) {
+            await handleTransactionFormSubmit(event, setFormMessage, budgetId, transaction.key);
+            addTransaction(undefined);
+        } else {
+            const newTransaction = await handleTransactionFormSubmit(event, setFormMessage, budgetId);
+            if (newTransaction == null) return;
+            addTransaction(newTransaction);
+        }
         closeFormModal();
     };
 
