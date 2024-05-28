@@ -10,6 +10,7 @@ interface ButtonTransactionPanelProps {
     budget: number;
 }
 
+
 interface AddTransactionProps {
     addTransaction: (newTransaction: LSTransaction | undefined) => void;
     budget: number;
