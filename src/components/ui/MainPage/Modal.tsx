@@ -4,11 +4,11 @@ import React, {FC} from 'react';
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 interface YesNoModalProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     isOpen: boolean;
     onClose: () => void;
     onYes?: () => void;

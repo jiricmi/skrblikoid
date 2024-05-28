@@ -66,6 +66,15 @@ export const getCategory = (): LSCategory[] => {
     return categories;
 }
 
+export const getCategoryByKey = (key: number): LSCategory | undefined => {
+    const item = localStorage.getItem(`category_${key}`);
+    if (item) {
+        console.log(item)
+        return JSON.parse(item);
+    }
+    return undefined;
+}
+
 const checkNameExists = (name: string): boolean => {
     for (let i = 0; i < localStorage.length; i++) {
         const item = localStorage.getItem(`category_${i}`);
