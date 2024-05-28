@@ -94,10 +94,6 @@ export const getTransactionsByBudget = (budget: number): LSTransaction[] => {
     return transactions;
 }
 
-export const addTestTransaction = (transaction: LSTransaction) => {
-    saveToLocalStorage(`transaction_${transaction.key}`, transaction);
-}
-
 export const transactionAmountString = (amount: number, type: string, budgetId: number, no_space?: boolean): string => {
     let amount_str: string;
     if (no_space === undefined) no_space = false;
@@ -120,5 +116,9 @@ export const transactionAmountString = (amount: number, type: string, budgetId: 
     } else {
         return `${currency.symbol}${amount_str}`;
     }
+}
+
+export const deleteTransaction = (key: number) => {
+    localStorage.removeItem(`transaction_${key}`);
 }
 

@@ -5,7 +5,7 @@ import {Page} from "@/components/ui/MainPage/Page";
 import {Table, TableTd, TableTr} from "@/components/ui/MainPage/Table";
 import {
     ButtonTransactionPanel,
-    CategoryBadge
+    CategoryBadge, TransactionEditTools
 } from "@/components/ui/TransactionPage/TransactionPage";
 import React, {useEffect} from "react";
 import {getTransactionsByBudget, LSTransaction, transactionAmountString} from "@/components/localStorage/transaction";
@@ -35,17 +35,16 @@ const Budget = () => {
     return (
         <Page title={`${getBudgetByKey(parseInt(router.query.budget as string))?.name}`}>
             <ButtonTransactionPanel addTransaction={addTransaction} budget={budgetId}/>
-            <Table keys={keys}>
+            <Table keys={keys} sm_hide={[0, 4]}>
                 {transactions.map((transaction) => (
                     <TableTr key={transaction.key} color_green={transaction.type === "income"}>
-                        <TableTd>{transaction.date}</TableTd>
-                        <TableTd>{transaction.name}</TableTd>
+                        <TableTd sm_hidden>{transaction.date}</TableTd>
+                        <TableTd transaction={transaction} addTransaction={addTransaction}>{transaction.name}</TableTd>
                         <TableTd><CategoryBadge category={getCategoryByKey(transaction.category)}/></TableTd>
-                        <TableTd>{transactionAmountString(transaction.amount, transaction.type, budgetId)}</TableTd>
-                        <TableTd>
-                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-2xl">
-                                Delete
-                            </button>
+                        <TableTd transaction={transaction}
+                                 addTransaction={addTransaction}>{transactionAmountString(transaction.amount, transaction.type, budgetId)}</TableTd>
+                        <TableTd sm_hidden>
+                            <TransactionEditTools transaction={transaction} addTransaction={addTransaction}/>
                         </TableTd>
                     </TableTr>
                 ))}
