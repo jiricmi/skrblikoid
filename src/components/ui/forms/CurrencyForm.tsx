@@ -1,7 +1,6 @@
 import React from "react";
 import {Form, FormInput, FormLabel, FormMessage, FormSelect, SubmitButton} from "@/components/ui/forms/Form";
 import {handleCurrencyFormSubmit, LSCurrency} from "@/components/localStorage/currency";
-import {log} from "node:util";
 
 interface CurrencyFormProps {
     addCurrency: (newCurrency: LSCurrency | undefined) => void;

@@ -37,3 +37,12 @@ export const deleteFromLocalStorage = (key: string): void => {
         console.error(e);
     }
 }
+
+export const donwloadCSV = (filename: string, data: string): void => {
+    const blob = new Blob([data], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename + '.csv';
+    a.click();
+}

@@ -1,7 +1,9 @@
 'use client';
-import {findFreeIndex, saveToLocalStorage} from "@/components/localStorage/localStorage";
+import {donwloadCSV, findFreeIndex, saveToLocalStorage} from "@/components/localStorage/localStorage";
 import React from "react";
-import {getAllCurrenciesName} from "@/components/localStorage/currency";
+import {getAllCurrenciesName, getCurrency, getCurrencyByKey} from "@/components/localStorage/currency";
+import {getTransactionsByBudget, transactionAmountString} from "@/components/localStorage/transaction";
+import {getCategoryByKey} from "@/components/localStorage/category";
 
 export interface LSBudget {
     key: number;
@@ -88,4 +90,20 @@ export const getBudgetByKey = (key: number): LSBudget | null => {
         return JSON.parse(item);
     }
     return null;
+}
+
+export const exportBudgetToCSV = (budget: number): void => {
+    let csv = "Date,Name,Category,Amount\n";
+    const filename = getBudgetByKey(budget)?.name || "undef";
+
+    const transactions = getTransactionsByBudget(budget);
+
+    for (let i = 0; i < transactions.length; i++) {
+        const category: string = getCategoryByKey(transactions[i].category)?.name || "undef";
+        const amount_str: string = transactionAmountString(transactions[i].amount, transactions[i].type, budget, true);
+        const date: string = transactions[i].date;
+        const name: string = transactions[i].name;
+        csv += `${date},${name},${category},${amount_str}\n`;
+    }
+    donwloadCSV(filename, csv);
 }

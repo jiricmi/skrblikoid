@@ -60,7 +60,7 @@ export const FormModal: FC<ModalProps> = ({isOpen, onClose, children}) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             {children}
-            <button className="bg-red-400 rounded-lg py-1 px-3 hover:bg-red-500 duration-300 text-white w-full mt-2"
+            <button className="bg-red-400 rounded-lg py-2 px-3 hover:bg-red-500 duration-300 text-white w-full mt-2"
                     onClick={onClose}>Close
             </button>
         </Modal>
