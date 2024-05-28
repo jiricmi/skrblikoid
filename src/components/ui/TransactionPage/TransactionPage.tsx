@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {FormModal} from "@/components/ui/MainPage/Modal";
-import {addTestTransaction, getTransactionsByBudget, LSTransaction} from "@/components/localStorage/transaction";
+import {LSTransaction} from "@/components/localStorage/transaction";
 import {LSCategory} from "@/components/localStorage/category";
 import {TransactionForm} from "@/components/ui/forms/TransactionForm";
 import {exportBudgetToCSV} from "@/components/localStorage/budget";
@@ -26,12 +26,12 @@ const getContrastColor = (hexColor: string): boolean => {
     return luminance > 0.5;
 };
 
-export const ButtonTransactionPanel:React.FC<ButtonTransactionPanelProps> = ({addTransaction, budget}) => {
+export const ButtonTransactionPanel: React.FC<ButtonTransactionPanelProps> = ({addTransaction, budget}) => {
     return (
-      <div className="flex gap-2">
-          <AddTransaction addTransaction={addTransaction} budget={budget}/>
-          <ExportBudget budgetId={budget} type="csv"/>
-      </div>
+        <div className="flex gap-2">
+            <AddTransaction addTransaction={addTransaction} budget={budget}/>
+            <ExportBudget budgetId={budget} type="csv"/>
+        </div>
     );
 }
 
@@ -45,8 +45,9 @@ export const AddTransaction: React.FC<AddTransactionProps> = ({addTransaction, b
     return (
         <div>
             <div className="flex lg:justify-normal justify-center lg:ml-5 mb-4">
-                <button className="bg-green-500 hover:bg-green-600 duration-300 text-white font-bold py-2 px-4 rounded-2xl"
-                        onClick={openForm}>
+                <button
+                    className="bg-green-500 hover:bg-green-600 duration-300 text-white font-bold py-2 px-4 rounded-2xl"
+                    onClick={openForm}>
                     Add Transaction
                 </button>
             </div>
@@ -67,19 +68,11 @@ export const CategoryBadge: React.FC<{ category?: LSCategory }> = ({category}) =
     )
 }
 
-export const TypeBadge: React.FC<{ type: string }> = ({type}) => {
-    return (
-        <div className={`rounded-full p-2 ${type === "expense" ? "bg-red-500" : "bg-green-500"} text-white`}>
-            {type}
-        </div>
-    )
-}
-
 export const ExportBudget: React.FC<{ budgetId: number, type: string }> = ({budgetId, type}) => {
     return (
         <div>
             <button className="bg-blue-500 hover:bg-blue-600 duration-200 text-white font-bold py-2 px-4 rounded-2xl"
-            onClick={() => exportBudgetToCSV(budgetId)}>
+                    onClick={() => exportBudgetToCSV(budgetId)}>
                 Export to {type}
             </button>
         </div>

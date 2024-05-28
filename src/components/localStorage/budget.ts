@@ -1,7 +1,7 @@
 'use client';
 import {donwloadCSV, findFreeIndex, saveToLocalStorage} from "@/components/localStorage/localStorage";
 import React from "react";
-import {getAllCurrenciesName, getCurrency, getCurrencyByKey} from "@/components/localStorage/currency";
+import {getAllCurrenciesName} from "@/components/localStorage/currency";
 import {getTransactionsByBudget, transactionAmountString} from "@/components/localStorage/transaction";
 import {getCategoryByKey} from "@/components/localStorage/category";
 
