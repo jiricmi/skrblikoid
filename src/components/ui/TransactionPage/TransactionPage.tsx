@@ -206,7 +206,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({budgetId, tra
         <div>
             <ButtonTransactionPanel addTransaction={addTransaction} budget={budgetId}/>
             <Table keys={keys} sm_hide={[0, 4]}>
-                {transactions.map((transaction) => (
+                {transactions.slice().reverse().map((transaction) => (
                     <TableTr key={transaction.key} color_green={transaction.type === "income"}>
                         <TableTd sm_hidden>{transaction.date}</TableTd>
                         <TableTd transaction={transaction} addTransaction={addTransaction}>{transaction.name}</TableTd>

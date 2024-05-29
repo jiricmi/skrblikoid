@@ -68,6 +68,9 @@ export const ChartPrepare: React.FC<BarPrepareProps> = ({sizeMargin, xOffSet, ma
     const diff = maxY / 5;
     const currency = getCurrencyByKey(getBudgetByKey(budgetId)?.currency || 0);
     const currencyName = currency?.name || '';
+
+    const shortName = currencyName.length > 8 ? currencyName.slice(0, 5) + '...' : currencyName;
+
     const budgetColor = getBudgetByKey(budgetId)?.color || '#000000';
     return (
         <g>
@@ -90,8 +93,8 @@ export const ChartPrepare: React.FC<BarPrepareProps> = ({sizeMargin, xOffSet, ma
                 ))
             }
 
-            <text x={xOffSet - 4} y={55} fontSize="2" textAnchor="end" fill="black">
-                {`${currencyName}/day`}
+            <text x={xOffSet - 2} y={55} fontSize="2" textAnchor="end" fill="black">
+                {`${shortName}/day`}
             </text>
         </g>
     )
@@ -124,7 +127,7 @@ export const BarChart: React.FC<BarChartProps> = ({data, budgetId}) => {
             <ChartPrepare sizeMargin={sizeMargin} xOffSet={xOffSet} maxValue={maxValue} maxY={maxY}
                           budgetId={budgetId}/>
             {/*vygenerovani sloupecku*/}
-            {data.map((item, index) => (
+            {data.slice().reverse().map((item, index) => (
                 <g key={`g${index}`}>
                     {/*profit*/}
                     <rect
