@@ -94,6 +94,24 @@ export const getTransactionsByBudget = (budget: number): LSTransaction[] => {
     return transactions;
 }
 
+export const getSumOfTransactionsByBudget = (budget: number): number => {
+    let sum = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+        const item = localStorage.getItem(`transaction_${i}`);
+        if (item) {
+            const parsedItem = JSON.parse(item);
+            if (parsedItem.budget === budget) {
+                if (parsedItem.type === "income") {
+                    sum += parsedItem.amount;
+                } else {
+                    sum -= parsedItem.amount;
+                }
+            }
+        }
+    }
+    return sum;
+}
+
 export const transactionAmountString = (amount: number, type: string, budgetId: number, no_space?: boolean): string => {
     let amount_str: string;
     if (no_space === undefined) no_space = false;
@@ -118,7 +136,26 @@ export const transactionAmountString = (amount: number, type: string, budgetId: 
     }
 }
 
+export const getLatestTransactionInBudget = (budget: number): LSTransaction | null => {
+    let latest: LSTransaction | null = null;
+    for (let i = 0; i < localStorage.length; i++) {
+        const item = localStorage.getItem(`transaction_${i}`);
+        if (item) {
+            const parsedItem = JSON.parse(item);
+            if (parsedItem.budget === budget) {
+                if (latest === null) {
+                    latest = parsedItem;
+                } else {
+                    if (new Date(parsedItem.date) > new Date(latest.date)) {
+                        latest = parsedItem;
+                    }
+                }
+            }
+        }
+    }
+    return latest;
+}
+
 export const deleteTransaction = (key: number) => {
     localStorage.removeItem(`transaction_${key}`);
 }
-

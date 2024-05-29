@@ -1,6 +1,8 @@
 import React from "react";
 import {useNavigate} from "react-router";
 import Link from "next/link";
+import {exportLocalStorage} from "@/components/localStorage/localStorage";
+import {ImportModal, Modal} from "@/components/ui/MainPage/Modal";
 
 
 interface SideBarProps {
@@ -15,6 +17,7 @@ interface DividerProps {
 interface NavItemBorderProps {
     className?: string;
     href?: string;
+    onClick?: () => void;
     children: React.ReactNode;
 }
 
@@ -44,9 +47,9 @@ export const Divider: React.FC<DividerProps> = ({color}) => {
     );
 }
 
-const NavItemBorder: React.FC<NavItemBorderProps> = ({className, href="/", children}) => {
+const NavItemBorder: React.FC<NavItemBorderProps> = ({className, href = "/", onClick, children}) => {
     return (
-        <Link href={`${href}`}>
+        <Link href={`${href}`} onClick={onClick}>
             <div
                 className={`${className} flex items-center p-2 mt-2 bg-blue-500 hover:bg-blue-600 transition-colors duration-100 rounded-lg`}>
                 {children}
@@ -94,6 +97,15 @@ const SideBarPanel: React.FC<SideBarPanelProps> = ({openMenu, children}) => {
 }
 
 export const SideBar: React.FC<SideBarProps> = ({openMenu, setOpenMenu}) => {
+    const [openImport, setOpenImport] = React.useState(false);
+    const openImportMenu = () => {
+        setOpenImport(true);
+    }
+
+    const closeImportMenu = () => {
+        setOpenImport(false);
+    }
+
     return (
         <div>
             <SideBarPanel openMenu={openMenu}>
@@ -117,15 +129,16 @@ export const SideBar: React.FC<SideBarProps> = ({openMenu, setOpenMenu}) => {
                     <NavItemLogo src="/currency.svg" alt="Currency"/>
                     <NavH2 openMenu={openMenu}>Currencies</NavH2>
                 </NavItemBorder>
-                <NavItemBorder>
+                <NavItemBorder onClick={openImportMenu}>
                     <NavItemLogo src="/import.svg" alt="Import"/>
                     <NavH2 openMenu={openMenu}>Import</NavH2>
                 </NavItemBorder>
-                <NavItemBorder>
+                <NavItemBorder onClick={exportLocalStorage}>
                     <NavItemLogo src="/export.svg" alt="Export"/>
                     <NavH2 openMenu={openMenu}>Export</NavH2>
                 </NavItemBorder>
             </SideBarPanel>
+            <ImportModal isOpen={openImport} onClose={closeImportMenu}/>
         </div>
     )
 }
