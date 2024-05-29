@@ -5,10 +5,11 @@ import {getCategoryByKey} from "@/components/localStorage/category";
 import {TransactionEditTools} from "@/components/ui/TransactionPage/TransactionPage";
 import {useWindowWidth} from "@react-hook/window-size/throttled";
 
+// Vytvorene komponenty pro potrebu zobrazovani transakci
 export const TableThead: React.FC<{ keys: string[], sm_hide?: number[] }> = ({keys, sm_hide}) => {
     const isHide = (index: number) => {
         if (sm_hide === undefined) return false;
-        return sm_hide.includes(index);
+        return sm_hide.includes(index); // sm_hide slouzi k respozivite, kdy na mobilu se nezobrazuji nektere sloupce
     }
     return (
         <thead>
@@ -64,6 +65,9 @@ export const TableTr: React.FC<{
     );
 };
 
+// je zde funkcionalita, kde nejake bunky se schovani kvuli respozivite na mobilu
+// v sm_hidden jsou indexy tabulek
+// take je mozne dat do props transaction a addTransaction a po kliknuti v mobilnim rezimu na bunku se zobrazi modal okno s podrobnostmi
 export const TableTd: React.FC<{
     children?: React.ReactNode,
     sm_hidden?: boolean,

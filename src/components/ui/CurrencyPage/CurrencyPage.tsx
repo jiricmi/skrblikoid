@@ -21,6 +21,7 @@ export const CurrencyPage = () => {
 
     return (
         <BlockPage>
+            {/*generovani dynamicky bloky*/}
             {currencies && currencies.map((currency) => (
                 <CurrencyBlock key={currency.key} currency={currency} currencies={currencies}
                                addCurrency={addCurrency}/>

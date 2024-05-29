@@ -69,7 +69,7 @@ export const FormModal: FC<ModalProps> = ({isOpen, onClose, children}) => {
     );
 }
 
-
+// modal okno pro importovani dat a handlovani file inputu
 export const ImportModal: FC<ImportModalProps> = ({isOpen, onClose}) => {
     const [file, setFile] = React.useState<File | null>(null);
 

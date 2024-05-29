@@ -1,4 +1,6 @@
 'use client';
+
+// zakladni funkce pro praci s local storage
 export const findFreeIndex = (prefix: string): number => {
     for (let i = 0; i < localStorage.length + 2; i++) {
         const item = localStorage.getItem(`${prefix}${i}`);

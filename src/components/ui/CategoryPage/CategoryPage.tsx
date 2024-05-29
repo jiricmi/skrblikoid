@@ -20,6 +20,7 @@ export const CategoryPage = () => {
 
     return (
         <BlockPage>
+            {/*zobrazeni kategorii dynamicky jak se vytvareji*/}
             {categories && categories.map((category) => (
                 <CategoryBlock key={category.key} category={category} categories={categories}
                                addCategory={addCategory}/>

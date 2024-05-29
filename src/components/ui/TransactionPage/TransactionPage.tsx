@@ -48,13 +48,14 @@ interface TransactionGraphsProps {
     transactions: LSTransaction[]
 }
 
+// zjisteni zda pro dany background se hodi bily nebo cerny text
 const getContrastColor = (hexColor: string): boolean => {
     hexColor = hexColor.replace('#', '');
 
     const r = parseInt(hexColor.substring(0, 2), 16);
     const g = parseInt(hexColor.substring(2, 4), 16);
     const b = parseInt(hexColor.substring(4, 6), 16);
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255; // AI helped me to find this formula
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255; // S timto mi pomohl internet
     return luminance > 0.5;
 };
 
@@ -115,6 +116,7 @@ export const AddTransaction: React.FC<AddTransactionProps> = ({addTransaction, b
     )
 }
 
+// badge pro kategorii
 export const CategoryBadge: React.FC<{ category?: LSCategory }> = ({category}) => {
     const category_color = category === undefined ? "#ffffff" : category.color;
     return (
@@ -125,6 +127,7 @@ export const CategoryBadge: React.FC<{ category?: LSCategory }> = ({category}) =
     )
 }
 
+// tlacitko pro exportovani dat do csv
 export const ExportBudget: React.FC<{ budgetId: number, type: string }> = ({budgetId, type}) => {
     return (
         <div className="w-screen lg:w-auto lg:px-0 px-2 lg:mb-0 mb-2">
@@ -175,6 +178,7 @@ export const EditTransactionButton: React.FC<TransactionEditToolsProps> = ({tran
     );
 }
 
+// tlacitko pro smazani konkretni transakce s bezpecnostnim modal oknem
 export const TransactionEditTools: React.FC<TransactionEditToolsProps> = ({transaction, addTransaction}) => {
     return (
         <div className="flex justify-center gap-4">
@@ -185,8 +189,7 @@ export const TransactionEditTools: React.FC<TransactionEditToolsProps> = ({trans
 }
 
 export const TransactionTable: React.FC<TransactionTableProps> = ({budgetId, transactions, setTransactions}) => {
-    let keys = ["Date", "Name", "Category", "Amount", "Action"];
-
+    let keys = ["Date", "Name", "Category", "Amount", "Action"]; // sloupce
 
     useEffect(() => {
         return setTransactions(getTransactionsByBudget(budgetId));

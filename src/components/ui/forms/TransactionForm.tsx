@@ -10,7 +10,9 @@ interface TransactionFormProps {
     budgetId: number;
 }
 
-
+// tento formular slouzi k zalozeni transakce
+// take tento formular se pouziva pro editaci, kdy pres volitelny parametr transaction se nactou vsechny hodnoty do inputu
+// a uzivatel upravi co potrebuje a nasledne po odeslani se hodnota zapise/prepise v localstorage, zavre modal a prekresli blocky
 export const TransactionForm: React.FC<TransactionFormProps> = ({
                                                                     addTransaction,
                                                                     closeFormModal,
@@ -74,6 +76,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({
                         value={category}
                         onChange={(e) => setCategory(parseInt(e.target.value))}>
                         <option value={-1} disabled>Select category</option>
+                        {/*zde se vygeneruji kategorie ktere uzivatel vytvoril*/}
                         {categories.map((category) => (
                             <option key={category.key} value={category.key}>{category.name}</option>
                         ))}

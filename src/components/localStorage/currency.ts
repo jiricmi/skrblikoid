@@ -19,6 +19,7 @@ export interface LSCurrency {
 
 type SetFormMessage = (message: string) => void;
 
+// funkce pro overovani formulare a nasledne ulozeni dat do local storage
 export const handleCurrencyFormSubmit = async (event: React.FormEvent<HTMLFormElement>, setFormMessage: SetFormMessage, editKey?: number): Promise<LSCurrency | null> => {
     event.preventDefault();
     const form = event.currentTarget;

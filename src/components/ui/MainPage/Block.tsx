@@ -43,7 +43,8 @@ const BlockDiv: React.FC<BlockDivProps> = ({
                                            }) => {
     return (
         <div className="m-3">
-            <div className="hover:rotate-1 duration-300 rounded-2xl pb-3" style={{backgroundColor: color}} onClick={onClick}>
+            <div className="hover:rotate-1 duration-300 rounded-2xl pb-3" style={{backgroundColor: color}}
+                 onClick={onClick}>
                 <div
                     className={`2xl:w-80 w-full h-48 rounded-2xl ${className} duration-200 ease-in`}>
                     {children}
@@ -53,6 +54,7 @@ const BlockDiv: React.FC<BlockDivProps> = ({
     );
 }
 
+// tento block se zobrazuje na index strance ziska data z localstorage a vygeneruje statistiky
 export const InfoBlock: React.FC<{ color: string }> = ({color}) => {
     const transactionCount = countTransactions();
     const budgetCount = countBudgets();
@@ -66,6 +68,7 @@ export const InfoBlock: React.FC<{ color: string }> = ({color}) => {
     const currencies = getCurrency();
     const budgets = getBudgets();
 
+    // zjisteni vsech prijmu a vydaju
     transactions.forEach(transaction => {
         const currencyId = budgets.find(budget => budget.key === transaction.budget)?.currency;
         const currency = currencies.find(currency => currency.key.toString() === currencyId);
@@ -77,13 +80,13 @@ export const InfoBlock: React.FC<{ color: string }> = ({color}) => {
         }
     });
 
-    const splitByThreeDigits = (num: number) => {
+    const splitByThreeDigits = (num: number) => { // rozdelovani cisel po trech dle US standartu
         return num.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     let balance: number = income - expenses;
 
-
+    // lokalni react komponenta kvuli tailwind
     const H1: React.FC<{ children: React.ReactNode, color?: string }> = ({children, color}) => {
         return (
             <div className={`${color} p-3 rounded-2xl duration-500 hover:scale-105 hover:rotate-1`}>

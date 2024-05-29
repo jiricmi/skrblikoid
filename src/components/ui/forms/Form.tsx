@@ -1,5 +1,7 @@
 import React from "react";
 
+// toto jsou zakladni prvky formulare ktere jsem si vytvoril kvuli tailwinds
+
 interface FormProps {
     onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
     children?: React.ReactNode;

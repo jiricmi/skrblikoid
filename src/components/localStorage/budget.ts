@@ -14,6 +14,7 @@ export interface LSBudget {
 
 type SetFormMessage = (message: string) => void;
 
+// funkce pro overovani formulare a nasledne ulozeni dat do local storage
 export const handleBudgetFormSubmit = async (event: React.FormEvent<HTMLFormElement>, setFormMessage: SetFormMessage): Promise<LSBudget | null> => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -59,6 +60,8 @@ export const handleBudgetFormSubmit = async (event: React.FormEvent<HTMLFormElem
 
     return jsoned_data;
 }
+
+// ZAKLADNI FUNKCE PRO PRACOVANI S LOCAL STORAGE
 
 export const getBudgets = (): LSBudget[] => {
     let budgets: LSBudget[] = [];

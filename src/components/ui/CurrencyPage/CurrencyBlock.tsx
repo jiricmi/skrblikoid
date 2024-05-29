@@ -15,6 +15,7 @@ interface CurrencyBlockAddProps {
     addCurrency: (newCurrency: any) => void;
 }
 
+// tato komponenta ma obdobnou strukturu jako categoryBlock, ale je zde zjednodusena struktura
 export const CurrencyBlock: React.FC<CurrencyBlockProps> = ({onClick, currency, currencies, addCurrency}) => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const [isOpenDelete, setOpenDelete] = useState<boolean>(false);

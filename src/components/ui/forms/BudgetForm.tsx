@@ -8,6 +8,8 @@ interface BudgetFormProps {
     closeFormModal: () => void;
 }
 
+// formular pro tvormu budgetu
+// je zde hook na formMessage, ktery se zobrazi, pokud se nepodari odeslat formular
 const BudgetForm: React.FC<BudgetFormProps> = ({addBudget, closeFormModal}) => {
     const [formMessage, setFormMessage] = React.useState<string>("");
     const currencies = getAllCurrenciesName();
@@ -29,6 +31,7 @@ const BudgetForm: React.FC<BudgetFormProps> = ({addBudget, closeFormModal}) => {
                 <FormLabel>Currency
                     <FormSelect name="budgetCurrency">
                         {
+                            // generovani option elementu pro select podle toho jake si uzivatel vytvoril meny
                             currencies.map((currency, index) => (
                                 <option key={index} value={index}>{currency}</option>
                             ))

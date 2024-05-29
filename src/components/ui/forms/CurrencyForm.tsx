@@ -8,6 +8,11 @@ interface CurrencyFormProps {
     currency?: LSCurrency;
 }
 
+
+// tento formular je pro tvorbu meny
+// tento stejny formular se pouziva i pro editaci stavajici meny
+// pokud editujeme menu, vsechny hodnoty se nactou z currency do inputu a uzivatel upravi kterou potrebuje
+// cele je to zavisle na tom zda do formulare davame promnenou currency kde je ulozena informace o mene kterou chceme editovat
 export const CurrencyForm: React.FC<CurrencyFormProps> = ({addCurrency, closeFormModal, currency}) => {
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [name, setName] = React.useState<string>(currency ? currency.name : "");

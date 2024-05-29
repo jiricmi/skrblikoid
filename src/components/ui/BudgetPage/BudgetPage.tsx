@@ -11,6 +11,7 @@ export const BudgetPage = () => {
         setBudgets(getBudgets());
     }, []);
 
+    // Tato funkce pridava novy rozpocet do seznamu rozpoctu a zpusobi prekresleni stranky
     const addBudget = (newBudget: LSBudget) => {
         setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
     };
@@ -18,6 +19,7 @@ export const BudgetPage = () => {
     return (
         <div className={"2xl:flex"}>
             <BlockPage className={"w-full"}>
+                {/*Vygenerovani budgetu z hooku*/}
                 {budgets.map((budget) => (
                     <BudgetBlock key={budget.key} budget={budget}/>
                 ))}

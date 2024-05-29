@@ -9,6 +9,7 @@ export interface LSCategory {
 
 type setFormMessage = (message: string) => void;
 
+// funkce pro overovani formulare a nasledne ulozeni dat do local storage
 export const handleCategoryFormSubmit = async (event: React.FormEvent<HTMLFormElement>, setFormMessage: setFormMessage, key?: number): Promise<LSCategory | null> => {
     event.preventDefault();
     const form = event.currentTarget;

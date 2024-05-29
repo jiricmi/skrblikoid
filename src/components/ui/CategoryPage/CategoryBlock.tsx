@@ -15,13 +15,17 @@ interface CategoryBlockAddProps {
     addCategory: (newCategory: any) => void;
 }
 
+// tato komponenta vychazi z komponenty Block, ktera je definovana v MainPage/Block.tsx
+// zobrazuje jednotlive bloky s kategoriemi na hlavni strance
+// tento block ma take moznost smazani a editace kategorie a tzn dve modal okna
+// tyto moznosti se ukazou po najeti na blok mysi
 export const CategoryBlock: React.FC<CategoryBlockProps> = ({onClick, category, categories, addCategory}) => {
     const [isHovered, setIsHovered] = React.useState<boolean>(false);
     const [isOpenDelete, setOpenDelete] = React.useState<boolean>(false);
     const [isOpenEdit, setOpenEdit] = React.useState<boolean>(false);
 
     const openDeleteModal = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation();
+        event.stopPropagation(); // zastavi bublani udalosti
         setOpenDelete(true);
     }
 
@@ -48,11 +52,12 @@ export const CategoryBlock: React.FC<CategoryBlockProps> = ({onClick, category, 
                     onMouseLeave={() => setIsHovered(false)}>
                     <div className="text-center">
                         <h2 className="text-xl font-semibold">{category.name}</h2>
-                        <AddEditDeleteBar id={category.key} onEdit={openEditModal} onDelete={openDeleteModal}
+                        <AddEditDeleteBar id={category.key} onEdit={openEditModal} onDelete={openDeleteModal} // tady jsou tlacitka pro editaci a smazani
                                           isHovered={isHovered}/>
                     </div>
                 </div>
             </Block>
+            {/*Okna ktera se ukazou po kliknuti na edit nebo na delete*/}
             <YesNoModal isOpen={isOpenDelete} onClose={closeDeleteModal} onYes={() => handleDelete(category.key)}>
                 <p>Are you sure you want to delete {category.name}?</p>
             </YesNoModal>
@@ -64,6 +69,8 @@ export const CategoryBlock: React.FC<CategoryBlockProps> = ({onClick, category, 
     );
 }
 
+// napodobne jako u BudgetBlockAdd
+// ukaze formular po kliknuti na tlacitko a po uspesnem odeslani formulare se zavre
 export const CategoryBlockAdd: React.FC<CategoryBlockAddProps> = ({addCategory}) => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
