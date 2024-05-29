@@ -1,8 +1,7 @@
 import React from "react";
-import {useNavigate} from "react-router";
 import Link from "next/link";
 import {exportLocalStorage} from "@/components/localStorage/localStorage";
-import {ImportModal, Modal} from "@/components/ui/MainPage/Modal";
+import {ImportModal} from "@/components/ui/MainPage/Modal";
 
 
 interface SideBarProps {

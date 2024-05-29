@@ -14,14 +14,6 @@ const Budget = () => {
     const [transactions, setTransactions] = React.useState<LSTransaction[]>([]);
 
     const budgetId: number = parseInt(router.query.budget as string);
-    const data = [
-        {label: 'Jan', value: 30},
-        {label: 'Feb', value: 20},
-        {label: 'Mar', value: 50},
-        {label: 'Apr', value: 40},
-        {label: 'May', value: 70},
-    ];
-
     return (
         <Page title={`${getBudgetByKey(parseInt(router.query.budget as string))?.name}`}>
             <TransactionGraphs budgetId={budgetId} transactions={transactions}/>
