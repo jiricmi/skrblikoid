@@ -121,6 +121,10 @@ export const SideBar: React.FC<SideBarProps> = ({openMenu, setOpenMenu}) => {
                     <NavItemLogo src="/dashboard.svg" alt="Dashboard"/>
                     <NavH2 openMenu={openMenu}>Dashboard</NavH2>
                 </NavItemBorder>
+                <NavItemBorder href="/graphs">
+                    <NavItemLogo src="/graph.png" alt="Dashboard"/>
+                    <NavH2 openMenu={openMenu}>Graphs</NavH2>
+                </NavItemBorder>
                 <NavItemBorder href="/category">
                     <NavItemLogo src="/category.svg" alt="Category"/>
                     <NavH2 openMenu={openMenu}>Categories</NavH2>
