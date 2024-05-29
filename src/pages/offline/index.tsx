@@ -1,5 +1,4 @@
 import {Page} from "@/components/ui/MainPage/Page";
-import {getBudgets} from "@/components/localStorage/budget";
 
 const Index = () => {
     return (
