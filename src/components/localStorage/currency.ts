@@ -1,6 +1,11 @@
 'use client';
 import React from "react";
-import {deleteFromLocalStorage, findFreeIndex, loadFromLocalStorage} from "@/components/localStorage/localStorage";
+import {
+    countItems,
+    deleteFromLocalStorage,
+    findFreeIndex,
+    loadFromLocalStorage
+} from "@/components/localStorage/localStorage";
 import {deleteBudget} from "@/components/localStorage/budget";
 
 export interface LSCurrency {
@@ -127,6 +132,10 @@ export const deleteCurrency = (key: number) => {
             }
         }
     }
+}
+
+export const countCurrencies = (): number => {
+    return countItems('currency');
 }
 
 export const getCurrencyByKey = (key: number | string): LSCurrency | null => {

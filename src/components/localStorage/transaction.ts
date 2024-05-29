@@ -1,4 +1,9 @@
-import {findFreeIndex, loadFromLocalStorage, saveToLocalStorage} from "@/components/localStorage/localStorage";
+import {
+    countItems,
+    findFreeIndex,
+    loadFromLocalStorage,
+    saveToLocalStorage
+} from "@/components/localStorage/localStorage";
 import React from "react";
 import {getBudgetByKey} from "@/components/localStorage/budget";
 import {getCurrencyByKey} from "@/components/localStorage/currency";
@@ -74,6 +79,17 @@ export const handleTransactionFormSubmit = async (event: React.FormEvent<HTMLFor
     return json;
 
 
+}
+
+export const getTransactions = (): LSTransaction[] => {
+    let transactions: LSTransaction[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const item = localStorage.getItem(`transaction_${i}`);
+        if (item) {
+            transactions.push(JSON.parse(item));
+        }
+    }
+    return transactions;
 }
 
 export const getTransactionByKey = (key: number): LSTransaction => {
@@ -155,6 +171,11 @@ export const getLatestTransactionInBudget = (budget: number): LSTransaction | nu
     }
     return latest;
 }
+
+export const countTransactions = (): number => {
+    return countItems('transaction');
+}
+
 
 export const deleteTransaction = (key: number) => {
     localStorage.removeItem(`transaction_${key}`);

@@ -1,4 +1,4 @@
-import {findFreeIndex} from "@/components/localStorage/localStorage";
+import {countItems, findFreeIndex} from "@/components/localStorage/localStorage";
 import React from "react";
 
 export interface LSCategory {
@@ -84,6 +84,10 @@ const checkNameExists = (name: string): boolean => {
         }
     }
     return false;
+}
+
+export const countCategories = (): number => {
+    return countItems('category');
 }
 
 

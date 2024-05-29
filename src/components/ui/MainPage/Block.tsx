@@ -1,5 +1,8 @@
 import React from 'react';
 import {FormModal} from "@/components/ui/MainPage/Modal";
+import {countTransactions, getTransactions} from "@/components/localStorage/transaction";
+import {countBudgets, getBudgets} from "@/components/localStorage/budget";
+import {countCurrencies, getCurrency} from "@/components/localStorage/currency";
 
 interface BlockDivProps {
     onClick?: () => void;
@@ -40,15 +43,79 @@ const BlockDiv: React.FC<BlockDivProps> = ({
                                            }) => {
     return (
         <div className="m-3">
-            <div className="rounded-2xl pb-3" style={{backgroundColor: color}} onClick={onClick}>
+            <div className="hover:rotate-1 duration-300 rounded-2xl pb-3" style={{backgroundColor: color}} onClick={onClick}>
                 <div
-                    className={`lg:w-80 w-full h-48 rounded-2xl ${className} duration-200 ease-in`}>
+                    className={`2xl:w-80 w-full h-48 rounded-2xl ${className} duration-200 ease-in`}>
                     {children}
                 </div>
             </div>
         </div>
     );
 }
+
+export const InfoBlock: React.FC<{ color: string }> = ({color}) => {
+    const transactionCount = countTransactions();
+    const budgetCount = countBudgets();
+    const currencyCount = countCurrencies();
+
+    let expenses: number = 0;
+    let income: number = 0;
+
+    const transactions = getTransactions();
+
+    const currencies = getCurrency();
+    const budgets = getBudgets();
+
+    transactions.forEach(transaction => {
+        const currencyId = budgets.find(budget => budget.key === transaction.budget)?.currency;
+        const currency = currencies.find(currency => currency.key.toString() === currencyId);
+        const amount = transaction.amount * (currency ? currency.rate : 1);
+        if (transaction.type === "expense") {
+            expenses += amount;
+        } else {
+            income += amount;
+        }
+    });
+
+    let balance: number = income - expenses;
+
+
+    const H1: React.FC<{ children: React.ReactNode, color?: string }> = ({children, color}) => {
+        return (
+            <div className={`${color} p-3 rounded-2xl duration-500 hover:scale-105 hover:rotate-1`}>
+                <h1 className="text-2xl font-semibold">
+                    {children}
+                </h1>
+            </div>
+        );
+    }
+
+    return (
+        <div className={`${color} flex w-full m-3 h-96 justify-center rounded-2xl`}>
+            <div className="grid grid-cols-2 gap-x-10 h-full items-center ">
+                <H1 color="bg-green-300">
+                    {`Income: $${income.toFixed(2)}`}
+                </H1>
+                <H1>
+                    {`Transactions: ${transactionCount}`}
+                </H1>
+                <H1 color="bg-red-300">
+                    {`Expenses: $${expenses.toFixed(2)}`}
+                </H1>
+                <H1>
+                    {`Budgets: ${budgetCount}`}
+                </H1>
+                <H1 color={balance < 0 ? 'bg-red-300' : 'bg-green-300'}>
+                    {`Balance: $${balance.toFixed(2)}`}
+                </H1>
+                <H1>
+                    {`Currencies: ${currencyCount}`}
+                </H1>
+            </div>
+        </div>
+    );
+}
+
 
 export const Block: React.FC<BlockProps> = ({className, onClick, color, children}) => {
     if (color === undefined) {

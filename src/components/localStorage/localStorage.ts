@@ -69,3 +69,13 @@ export const importLocalStorage = (data: string): void => {
         console.error(e);
     }
 }
+
+export const countItems = (name: string): number => {
+    let count = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+        if (localStorage.key(i)?.includes(name + "_")) {
+            count++;
+        }
+    }
+    return count;
+}

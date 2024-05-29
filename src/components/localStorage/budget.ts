@@ -1,5 +1,5 @@
 'use client';
-import {donwloadCSV, findFreeIndex, saveToLocalStorage} from "@/components/localStorage/localStorage";
+import {countItems, donwloadCSV, findFreeIndex, saveToLocalStorage} from "@/components/localStorage/localStorage";
 import React from "react";
 import {getAllCurrenciesName} from "@/components/localStorage/currency";
 import {getTransactionsByBudget, transactionAmountString} from "@/components/localStorage/transaction";
@@ -106,6 +106,10 @@ export const exportBudgetToCSV = (budget: number): void => {
         csv += `${date},${name},${category},${amount_str}\n`;
     }
     donwloadCSV(filename, csv);
+}
+
+export const countBudgets = (): number => {
+    return countItems('budget');
 }
 
 export const deleteBudget = (key: number): void => {
