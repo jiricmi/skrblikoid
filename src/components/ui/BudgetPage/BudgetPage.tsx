@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {BudgetBlock, BudgetBlockAdd} from '@/components/ui/BudgetPage/BudgetBlock';
 import {getBudgets, LSBudget} from '@/components/localStorage/budget';
 import {BlockPage} from '@/components/ui/MainPage/BlockPage';
-import {Block, InfoBlock} from "@/components/ui/MainPage/Block";
+import {InfoBlock} from "@/components/ui/MainPage/Block";
 
 export const BudgetPage = () => {
     const [budgets, setBudgets] = React.useState<LSBudget[]>([]);
