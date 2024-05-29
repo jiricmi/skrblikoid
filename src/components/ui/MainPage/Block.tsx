@@ -77,6 +77,10 @@ export const InfoBlock: React.FC<{ color: string }> = ({color}) => {
         }
     });
 
+    const splitByThreeDigits = (num: number) => {
+        return num.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     let balance: number = income - expenses;
 
 
@@ -94,19 +98,19 @@ export const InfoBlock: React.FC<{ color: string }> = ({color}) => {
         <div className={`${color} flex w-full m-3 h-96 justify-center rounded-2xl`}>
             <div className="grid grid-cols-2 gap-x-10 h-full items-center ">
                 <H1 color="bg-green-300">
-                    {`Income: $${income.toFixed(2)}`}
+                    {`Income: $${splitByThreeDigits(income)}`}
                 </H1>
                 <H1>
                     {`Transactions: ${transactionCount}`}
                 </H1>
                 <H1 color="bg-red-300">
-                    {`Expenses: $${expenses.toFixed(2)}`}
+                    {`Expenses: $${splitByThreeDigits(expenses)}`}
                 </H1>
                 <H1>
                     {`Budgets: ${budgetCount}`}
                 </H1>
                 <H1 color={balance < 0 ? 'bg-red-300' : 'bg-green-300'}>
-                    {`Balance: $${balance.toFixed(2)}`}
+                    {`Balance: $${splitByThreeDigits(balance)}`}
                 </H1>
                 <H1>
                     {`Currencies: ${currencyCount}`}
