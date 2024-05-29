@@ -4,7 +4,7 @@ import {importLocalStorage} from "@/components/localStorage/localStorage";
 
 interface ModalProps {
     isOpen: boolean;
-    onClose: () => void;
+    onClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
     children?: React.ReactNode;
 }
 
@@ -23,15 +23,11 @@ interface YesNoModalProps {
 
 export const Modal: FC<ModalProps> = ({isOpen, onClose, children}) => {
     if (!isOpen) return null;
-    document.onkeydown = (event) => {
-        if (event.key === "Escape") onClose();
-    }
-
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="fixed inset-0 bg-black opacity-50" onClick={onClose}></div>
+            <div className="fixed inset-0 bg-black opacity-50"></div>
             <div className="bg-white rounded-lg p-6 z-50">
-                <button className="absolute top-0 right-0 m-4 text-gray-600" onClick={onClose}>
+                <button className="absolute top-0 right-0 m-4 text-gray-600" onClick={(e) => onClose(e)}>
                     &times;
                 </button>
                 {children}

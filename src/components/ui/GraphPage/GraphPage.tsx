@@ -51,7 +51,7 @@ export const Graph: React.FC<{ budgetId: number }> = ({budgetId}) => {
     const data_profit = profit.map((value, index) => ({label: days[index], profit: value, loss: loss[index]}));
     return (
         <div className={"mb-20 lg:border-gray-200 lg:bg-gray-200 lg:rounded-2xl lg:border-2"}>
-            <h1 className="text-5xl mx-auto  text-center font-bold mb-4 mt-2">{budgetName}</h1>
+            <h1  id={`${budgetId}`} className="text-5xl mx-auto  text-center font-bold mb-4 mt-2">{budgetName}</h1>
             <div className="lg:w-full w-screen mx-auto lg:px-10 justify-center gap-5 lg:flex">
                 <BarChart data={data_profit} budgetId={budgetId}/>
             </div>

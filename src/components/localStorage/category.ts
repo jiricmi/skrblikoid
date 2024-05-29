@@ -89,4 +89,13 @@ const checkNameExists = (name: string): boolean => {
 
 export const deleteCategory = (key: number) => {
     localStorage.removeItem(`category_${key}`);
+    for (let i = 0; i < localStorage.length; i++) {
+        const item = localStorage.getItem(`transaction_${i}`);
+        if (item) {
+            const parsedItem = JSON.parse(item);
+            if (parsedItem.category === key.toString()) {
+                localStorage.removeItem(`transaction_${i}`);
+            }
+        }
+    }
 }

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, {useEffect} from "react";
 import {FormModal, YesNoModal} from "@/components/ui/MainPage/Modal";
 import {
     deleteTransaction,
@@ -8,10 +8,9 @@ import {
 } from "@/components/localStorage/transaction";
 import {getCategoryByKey, LSCategory} from "@/components/localStorage/category";
 import {TransactionForm} from "@/components/ui/forms/TransactionForm";
-import {exportBudgetToCSV} from "@/components/localStorage/budget";
+import {deleteBudget, exportBudgetToCSV} from "@/components/localStorage/budget";
 import {Table, TableTd, TableTr} from "@/components/ui/MainPage/Table";
 import {Block} from "@/components/ui/MainPage/Block";
-import {useWindowSize} from "@react-hook/window-size";
 
 interface ButtonTransactionPanelProps {
     addTransaction: (newTransaction: LSTransaction | undefined) => void;
@@ -40,6 +39,7 @@ interface TransactionTableProps {
 
 interface TransactionSummaryProps {
     className: string;
+    budgetId: number;
     children: React.ReactNode;
 }
 
@@ -63,6 +63,31 @@ export const ButtonTransactionPanel: React.FC<ButtonTransactionPanelProps> = ({a
         <div className="lg:flex lg:gap-2">
             <AddTransaction addTransaction={addTransaction} budget={budget}/>
             <ExportBudget budgetId={budget} type="csv"/>
+            <DeleteButton budgetId={budget}/>
+        </div>
+    );
+}
+
+const DeleteButton: React.FC<{ budgetId: number }> = ({budgetId}) => {
+    const [isOpenForm, setIsOpenForm] = React.useState(false);
+
+    const handleDelete = () => {
+        console.log("Deleting budget with key: " + budgetId);
+        deleteBudget(budgetId);
+        setIsOpenForm(false);
+        window.location.href = "/";
+    }
+
+    return (
+        <div className="w-screen lg:w-auto lg:px-0 px-2 lg:mb-0 mb-2">
+            <button
+                className="w-full bg-red-500 hover:bg-red-600 duration-200 text-white font-bold lg:py-3 py-4 px-4 rounded-2xl"
+                onClick={() => setIsOpenForm(true)}>
+                Delete Budget
+            </button>
+            <YesNoModal isOpen={isOpenForm} onClose={() => setIsOpenForm(false)} onYes={handleDelete}>
+                <h1>Are you sure you want to delete this budget?</h1>
+            </YesNoModal>
         </div>
     );
 }
@@ -114,7 +139,6 @@ export const ExportBudget: React.FC<{ budgetId: number, type: string }> = ({budg
 
 export const DeleteTransactionButton: React.FC<TransactionEditToolsProps> = ({transaction, addTransaction}) => {
     const [isOpenForm, setIsOpenForm] = React.useState(false);
-
 
     const handleDelete = (key: number) => {
         console.log("Deleting transaction with key: " + key);
@@ -197,8 +221,15 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({budgetId, tra
 }
 
 
-const TransactionBlockSummary: React.FC<TransactionSummaryProps> = ({className, children}) => {
-    return (<Block className={`${className} border-gray-200 border-2`}>
+const TransactionBlockSummary: React.FC<TransactionSummaryProps> = ({className, children, budgetId}) => {
+    const handleClick = () => {
+        window.location.href = "/graphs#" + budgetId;
+    }
+
+    return (
+        <Block
+            className={`${className} border-gray-200 border-2 transition duration-300 ease-in-out transform hover:scale-105`}
+            onClick={handleClick}>
             <div className="flex items-center justify-center h-full">
                 <div className="text-center">
                     {children}
@@ -240,19 +271,19 @@ export const TransactionGraphs: React.FC<TransactionGraphsProps> = ({budgetId, t
 
     return (
         <div className={"lg:flex"}>
-            <TransactionBlockSummary className="bg-green-100">
+            <TransactionBlockSummary className="bg-green-100" budgetId={budgetId}>
                 <h1 className="text-3xl font-semibold">Profit</h1>
                 <p className="text-2xl font-semibold">{profit_string}</p>
             </TransactionBlockSummary>
-            <TransactionBlockSummary className={"bg-red-100"}>
+            <TransactionBlockSummary className={"bg-red-100"} budgetId={budgetId}>
                 <h1 className="text-3xl font-semibold">Expenses</h1>
                 <p className="text-2xl font-semibold">{transactionAmountString(expenses, "profit", budgetId)}</p>
             </TransactionBlockSummary>
-            <TransactionBlockSummary className={(total >= 0) ? "bg-green-100" : "bg-red-100"}>
+            <TransactionBlockSummary className={(total >= 0) ? "bg-green-100" : "bg-red-100"} budgetId={budgetId}>
                 <h1 className="text-3xl font-semibold">Total</h1>
                 <p className="text-2xl font-semibold">{transactionAmountString(Math.abs(total), (total < 0 ? "expense" : "profit"), budgetId)}</p>
             </TransactionBlockSummary>
-            <TransactionBlockSummary className={(total >= 0) ? "bg-grey-100" : "bg-red-100"}>
+            <TransactionBlockSummary className={"bg-gray-100"} budgetId={budgetId}>
                 <h1 className="text-3xl font-semibold">Count</h1>
                 <p className="text-2xl font-semibold">{count}</p>
             </TransactionBlockSummary>

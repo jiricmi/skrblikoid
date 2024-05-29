@@ -107,3 +107,16 @@ export const exportBudgetToCSV = (budget: number): void => {
     }
     donwloadCSV(filename, csv);
 }
+
+export const deleteBudget = (key: number): void => {
+    localStorage.removeItem(`budget_${key}`);
+    for (let i = 0; i < localStorage.length; i++) {
+        const item = localStorage.getItem(`transaction_${i}`);
+        if (item) {
+            const parsed = JSON.parse(item);
+            if (parsed.budget === key.toString()) {
+                localStorage.removeItem(`transaction_${i}`);
+            }
+        }
+    }
+}

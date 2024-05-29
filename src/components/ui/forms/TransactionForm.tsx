@@ -46,7 +46,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({
 
     return (
         <div>
-            <Form onSubmit={(transaction === undefined) ? handleSubmit : handleSubmit}>
+            <Form onSubmit={handleSubmit}>
                 <FormLabel>
                     Name
                     <FormInput
@@ -101,7 +101,6 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({
                 <FormMessage message={formMessage}/>
                 <SubmitButton>Submit</SubmitButton>
             </Form>
-
         </div>
     );
 
