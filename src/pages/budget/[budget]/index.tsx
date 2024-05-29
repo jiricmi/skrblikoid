@@ -14,6 +14,17 @@ const Budget = () => {
     const [transactions, setTransactions] = React.useState<LSTransaction[]>([]);
 
     const budgetId: number = parseInt(router.query.budget as string);
+
+    if (!getBudgetByKey(budgetId)) {
+        return (
+            <Page title="Budget not found">
+                <div className="lg:w-full w-screen mx-auto lg:px-10 justify-center">
+                    <h1 className="text-4xl">Budget not found</h1>
+                </div>
+            </Page>
+        );
+    }
+
     return (
         <Page title={`${getBudgetByKey(parseInt(router.query.budget as string))?.name}`}>
             <TransactionGraphs budgetId={budgetId} transactions={transactions}/>
