@@ -12,7 +12,7 @@ Cílem bylo vytvořit aplikaci, do které si uživatel může zaznamenávat své
 Tyto technologie byly zvoleny z důvodu jejich popularitě a rozsáhlé dokumentace.
 Při vývoji jsem se snažil vyhýbat využívání komponent abych si procvičil práci s Reactem s kterým nemám žádné předchozí zkušenosti.
 ### Jak to funguje
-Lišta na boku je na počítači otvírací a vypíše i názvy záložek.
+Lišta na boku je na počítači otvírací a vypíše i názvy záložek. Pokud je uživatel na mobilu, stane se z ní burger menu.
 
 Aplikace nabízí vytvoření rozpočtů, které lze pojmenovat, určit v jaké měně se budou platby zaznamenávat a zvolit barvu.  
 Měnu uživatel může specificky vytvořit v záložce "Currencies" a následně ji použít při vytváření rozpočtu.
@@ -33,11 +33,13 @@ Vývoj mi zjednodušil React a Tailwind, kde jsem vždy vytvořil komponentu nap
 Vytvořil jsem různé animace hlavně tlačítek, které se zobrazují při najetí myší. Pro nějaké funkcionality jako například vyjížděcí menu jsem uskutečnil pomocí React Hook `useState`.
 Toto jsem také použil pro modální okna, která se zobrazují při vytváření nové platby nebo nové kategorie. Tyto okna mají Hook kde při kliknutí tlačítka se
 změní stav a okno se zobrazí a po submitnutí formuláře se zavře pokud nedojde k špatnému vylnění.
+Všechny formuláře kontrolují správnost a pokud je něco špatně, tak ukáží dynamicky ve formuláři, co je špatně.
   
 Celý projekt využívá LocalStorage pro ukládání dat, takže není potřeba žádný backend. Původně jsem chtěl využít GIN framework v Go a databázi Postgres, ale nakonec jsem se rozhodl pro jednodušší řešení
 protože cílem předmětu byl vývoj frontendu. Nicméně do budoucna bych si pro osobní potřebu chtěl vytvořit backend v Go a připojit ho k této aplikaci.
 Do localStorage lze importovat a exportovat data, což je užitečné pro zálohu dat nebo pro přenesení dat na jiné zařízení.
-  
+Do localStorage se data ukládají způsobem, že mám prefix klíče `(budget_{key}, category_{key} ...)` a do nich vkládám json. A poté mám funkce, které mi dokáží najít prvek podle klíče.
+   
 Aplikace je responzivní a měla by být použitelná na všech zařízeních. Například generovaná tabulka s transakcemi některé sloupce schová
 a zobrazí je pomocí modal okna při kliknutí na jméno transakce.
   
@@ -45,12 +47,14 @@ V aplikaci běží service worker, který umožňuje offline použití aplikace.
   
 Pro generování grafů jsem použil klasické HTML SVG elementy, které jsem vykreslil pomocí React komponent.
 Nějakou dobu jsem bojoval s responzivitou grafů, nicméně poté se mi podařilo zajistit aby to bylo čitelné i na mobilu.
-Grafy jsou k nalezení v záložce.
+Grafy jsou k nalezení v záložce. Ty jsou vytvořeny tak, že ukazují výdaje/přijmy 8 posledních dnů.
 
 ### Závěr
 Jelikož jsem neměl žádné zkušenosti s Reactem, pokud se teď na konci kouknu zpět, tak bych některé věci udělal jinak.
 Například bych více rozděloval do komponent nebo používal specialní nástroje pro nějaké věci.
 Nicméně jsem se naučil mnoho nových věcí, které mohu využít v budoucnu.
+Na aplikaci budu pracovat dále protože se mi osobně hodí na správu financí a do teď jsem to nahrazoval excel tabulkama. Je zde veliký prostor pro zlepšování.
+Je potom i možné aplikaci vygenerovat jako desktop.
 
 ### Test data
 v rootu projektu je soubor `localstorage.csv` který obsahuje testovací data, která lze importovat do aplikace.
