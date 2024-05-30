@@ -12,6 +12,8 @@ Cílem bylo vytvořit aplikaci, do které si uživatel může zaznamenávat své
 Tyto technologie byly zvoleny z důvodu jejich popularitě a rozsáhlé dokumentace.
 Při vývoji jsem se snažil vyhýbat využívání komponent abych si procvičil práci s Reactem s kterým nemám žádné předchozí zkušenosti.
 ### Jak to funguje
+Lišta na boku je na počítači otvírací a vypíše i názvy záložek.
+
 Aplikace nabízí vytvoření rozpočtů, které lze pojmenovat, určit v jaké měně se budou platby zaznamenávat a zvolit barvu.  
 Měnu uživatel může specificky vytvořit v záložce "Currencies" a následně ji použít při vytváření rozpočtu.
 Měně lze nastavit symbol, který se bude používat při zobrazování částek a také nabízí možnost zvolit zda symbol bude před měnou (např. $100) nebo za měnou (např. 100 Kč).
