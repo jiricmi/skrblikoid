@@ -3,10 +3,23 @@
   "short_name": "skrblikoid",
   "theme_color": "#00ff00",
   "background_color": "#ffffff",
-  "display": "browser",
+  "display": "standalone",
   "orientation": "any",
   "scope": "/",
   "start_url": "/",
+  "screenshots": [
+    {
+      "src": "images/screenshot-wide2.png",
+      "sizes": "1026x684",
+      "form_factor": "wide",
+      "label": "test"
+    },
+    {
+      "src": "images/screenshot-nonwide.png",
+      "sizes": "466x509",
+      "label": "test"
+    }
+  ],
   "icons": [
     {
       "src": "/icons-192.png",
